@@ -1,5 +1,5 @@
 .header {
-  position: absolute;
+  position: fixed;
   top: 0;
   left: 0;
   width: 100%;               
@@ -8,14 +8,44 @@
   align-items: center;       
   padding: 5px 20px;
   border-bottom: rgb(113, 148, 115) 1px solid;
+  z-index: 1001;
+  background-color: #121212;
+}
+
+.titre {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: bold;
+  min-width: 120px;
+}
+
+.header-logo {
+  height: 40px;
+  width: auto;
+  object-fit: contain;
+}
+
+.nav-links {
+  display: flex;
+  justify-content: center;
+  flex: 1;
+  gap: 20px;
+}
+
+.account-links {
+  display: flex;
+  gap: 15px;
+  min-width: 120px;
 }
 
 .header a {
   text-decoration: none;
   color: inherit;
-  margin-left: 15px;          
+  padding: 5px 10px;
+  transition: color 0.3s ease;
 }
 
-.titre {
-  font-weight: bold;
+.header a:hover {
+  color: #646cff;
 }

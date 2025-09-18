@@ -8,6 +8,7 @@ import MainPage from './Components/MainPage/MainPage.jsx';
 import LoginForm from './Components/LoginForm/LoginForm.jsx';
 import SignUpForm from './Components/SignupForm/SignUpForm.jsx';
 import ErrorPage from './Components/Error/ErrorPage.jsx';
+import Carte from './Components/Map/map.jsx';
 function App() {
 const router = createBrowserRouter([{
     path: "/",
@@ -17,7 +18,8 @@ const router = createBrowserRouter([{
     children: [
       { path: "/", element: <MainPage /> },
       { path: "/login", element: <LoginForm /> },
-      { path: "/signup", element: <SignUpForm /> } 
+      { path: "/signup", element: <SignUpForm /> },
+      {path:"/map", element:<Carte/>} 
     ]
   }
   ]);
