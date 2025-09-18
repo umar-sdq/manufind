@@ -1,13 +1,20 @@
 import React from "react";
 import './LoginForm.css';
 const LoginForm = () => {
-  return <div className="login-form">
-    <form>
-      <input name="utilisateur" type="text" placeholder="Nom d'utilisateur" />
-      <input name="mdp" type="password" placeholder="Mot de passe" />
-      <button name="connection" type="submit"> Se connecter </button>
-    </form>
-    
+  return <div>
+    <div className="login-form">
+      <form>
+        <h2> Re-Bienvenue!</h2>
+        <h2>Login</h2>
+        <h4>Nom d'utilisateur</h4>
+        <input name="utilisateur" type="text" />
+        <h4>Mot de passe</h4>
+        <input name="mdp" type="password" />
+        <button name="connection" type="submit"> Se connecter </button>
+      </form>
+
+    </div>
+
   </div>;
 };
 
