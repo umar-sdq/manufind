@@ -2,10 +2,10 @@
   position: fixed;
   top: 0;
   left: 0;
-  width: 100%;               
+  width: 100%;
   display: flex;
-  justify-content: space-between; 
-  align-items: center;       
+  justify-content: space-between;
+  align-items: center;
   padding: 5px 20px;
   border-bottom: rgb(113, 148, 115) 1px solid;
   z-index: 1001;
@@ -21,7 +21,7 @@
 }
 
 .header-logo {
-  height: 40px;
+  height: 70px;
   width: auto;
   object-fit: contain;
 }
