@@ -1,32 +1,28 @@
-.login-form{
-    
-    border-bottom: white 2px solid;
-}
-.login-form {
-     border-radius: 8px;
+.signup-form {
+    border-radius: 8px;
     padding: 12px;
     width: 300px;
     border: 2px solid #4d554f;
 }
 
-.login-form form {
+.signup-form form {
     display: flex;
     flex-direction: column;
-    gap: 15px;
+    gap: 5px;
 }
 
 input {
     background: #383737;
 }
 
-.login-form input,
-.login-form button {
-    padding: 15px;
+.signup-form input,
+.signup-form button {
+    padding: 13px;
     border: 1px solid #000000;
     border-radius: 12px;
 }
 
-.login-form button {
+.signup-form button {
     background-color: #2d5c3b;
     color: white;
     font-weight: bold;
@@ -34,18 +30,19 @@ input {
     transition: 0.2s ease;
 }
 
-.login-form button:hover {
+.signup-form button:hover {
     transition: 0.2s ease;
     background-color: #04250c;
 }
 
-.login-form input:hover {
+.signup-form input:hover {
     transition: 0.2s ease;
     background: #4c4a4a;
 
 }
-.login-form h2,
-.login-form h4 {
+.signup-form h2,
+.signup-form h4 {
     text-align: left;
     margin: 5px 0;
 }
+
