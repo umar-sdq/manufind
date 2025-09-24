@@ -1,0 +1,59 @@
+.profile-container {
+  max-width: 400px;
+  margin: 40px auto;
+  padding: 20px;
+  border-radius: 10px;
+  background: #26ac7450;
+  box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+  font-family: Arial, sans-serif;
+}
+
+.profile-container h1 {
+  font-size: 1.6rem;
+  margin-bottom: 15px;
+  color: #ddd0d0;
+}
+
+.profile-container p {
+  margin: 5px 0;
+  color: #ffffff;
+}
+
+.profile-container form {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 15px;
+}
+
+.profile-container label {
+  font-weight: bold;
+  font-size: 0.9rem;
+}
+
+.profile-container input {
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 6px;
+}
+
+.profile-container button {
+  padding: 10px;
+  background: #12d8ad3a;
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold;
+  transition: background 0.2s;
+}
+
+.profile-container button:hover {
+  background: #2c352e;
+}
+
+.profile-container .message {
+  margin-top: 10px;
+  font-size: 0.9rem;
+  color: rgb(243, 243, 243);
+}

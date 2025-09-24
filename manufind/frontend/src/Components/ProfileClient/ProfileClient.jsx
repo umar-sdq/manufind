@@ -1,8 +1,8 @@
 import React, { useState } from "react";
 import { useAuth } from "../AuthContext/AuthContext.jsx";
-import "./Profile.css";
+import "../ProfilePrestataire/Profile.css";
 
-const ProfilePrestataire = () => {
+const ProfileClient = () => {
   const { authData, login } = useAuth();
   const [nom, setNom] = useState(authData?.user.nom || "");
   const [email, setEmail] = useState(authData?.user.email || "");
@@ -33,7 +33,7 @@ const ProfilePrestataire = () => {
 
   return (
     <div className="profile-container">
-      <h1>Bienvenue, {authData.user.nom} (prestataire)</h1>
+      <h1>Hello, {authData.user.nom}!</h1>
       <p>Email: {authData.user.email}</p>
       <p>Role: {authData.user.role}</p>
 
@@ -52,4 +52,4 @@ const ProfilePrestataire = () => {
   );
 };
 
-export default ProfilePrestataire;
+export default ProfileClient;

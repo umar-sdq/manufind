@@ -9,22 +9,36 @@ import LoginForm from './Components/LoginForm/LoginForm.jsx';
 import SignUpForm from './Components/SignupForm/SignUpForm.jsx';
 import ErrorPage from './Components/Error/ErrorPage.jsx';
 import Carte from './Components/Map/map.jsx';
+import ProfilePrestataire from './Components/ProfilePrestataire/ProfilePrestataire.jsx'
+import ProfileClient from './Components/ProfileClient/ProfileClient.jsx'
+import About from './Components/About/About.jsx';
+import Contact from './Components/Contact/Contact.jsx';
+import Services from './Components/Services/Services.jsx';
+import { AuthProvider } from  "./Components/AuthContext/AuthContext.jsx";
 function App() {
-  const router = createBrowserRouter([{
-    path: "/",
-    element: <RootLayout />,
-    errorElement: <ErrorPage />,
-
-    children: [
-      { path: "/", element: <MainPage /> },
-      { path: "/login", element: <LoginForm /> },
-      { path: "/signup", element: <SignUpForm /> },
-      {path:"/map", element:<Carte/>} 
-    ]
-  }
+  const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <RootLayout />,
+      errorElement: <ErrorPage />,
+      children: [
+        { path: "/", element: <MainPage /> },
+        { path: "/about", element: <About /> },
+        { path: "/contact", element: <Contact /> },
+        { path: "/services", element: <Services/> },
+        { path: "/login", element: <LoginForm /> },
+        { path: "/signup", element: <SignUpForm /> },
+        { path: "/map", element:<Carte/> },
+        { path: "/profile-client", element: <ProfileClient /> },
+        { path: "/profile-pres", element: <ProfilePrestataire /> }
+      ]
+    }
   ]);
+
   return (
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   )
 }
 
