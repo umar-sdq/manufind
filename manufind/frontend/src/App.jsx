@@ -1,20 +1,20 @@
-import { useState } from 'react'
-import reactLogo from './assets/react.svg'
-import viteLogo from '/vite.svg'
-import './App.css'
-import { createBrowserRouter, RouterProvider } from 'react-router-dom'
+import { useState } from "react";
+import reactLogo from "./assets/react.svg";
+import viteLogo from "/vite.svg";
+import "./App.css";
+import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./Components/RootLayout/RootLayout.jsx";
-import MainPage from './Components/MainPage/MainPage.jsx';
-import LoginForm from './Components/LoginForm/LoginForm.jsx';
-import SignUpForm from './Components/SignupForm/SignUpForm.jsx';
-import ErrorPage from './Components/Error/ErrorPage.jsx';
-import Carte from './Components/Map/map.jsx';
-import ProfilePrestataire from './Components/ProfilePrestataire/ProfilePrestataire.jsx'
-import ProfileClient from './Components/ProfileClient/ProfileClient.jsx'
-import About from './Components/About/About.jsx';
-import Contact from './Components/Contact/Contact.jsx';
-import Services from './Components/Services/Services.jsx';
-import { AuthProvider } from  "./Components/AuthContext/AuthContext.jsx";
+import MainPage from "./Components/MainPage/MainPage.jsx";
+import LoginForm from "./Components/LoginForm/LoginForm.jsx";
+import SignUpForm from "./Components/SignupForm/SignupForm.jsx";
+import ErrorPage from "./Components/Error/ErrorPage.jsx";
+import Carte from "./Components/Map/map.jsx";
+import ProfilePrestataire from "./Components/ProfilePrestataire/ProfilePrestataire.jsx";
+import ProfileClient from "./Components/ProfileClient/ProfileClient.jsx";
+import About from "./Components/About/About.jsx";
+import Contact from "./Components/Contact/Contact.jsx";
+import Services from "./Components/Services/Services.jsx";
+import { AuthProvider } from "./Components/AuthContext/AuthContext.jsx";
 function App() {
   const router = createBrowserRouter([
     {
@@ -25,21 +25,21 @@ function App() {
         { path: "/", element: <MainPage /> },
         { path: "/about", element: <About /> },
         { path: "/contact", element: <Contact /> },
-        { path: "/services", element: <Services/> },
+        { path: "/services", element: <Services /> },
         { path: "/login", element: <LoginForm /> },
         { path: "/signup", element: <SignUpForm /> },
-        { path: "/map", element:<Carte/> },
+        { path: "/map", element: <Carte /> },
         { path: "/profile-client", element: <ProfileClient /> },
-        { path: "/profile-pres", element: <ProfilePrestataire /> }
-      ]
-    }
+        { path: "/profile-pres", element: <ProfilePrestataire /> },
+      ],
+    },
   ]);
 
   return (
     <AuthProvider>
       <RouterProvider router={router} />
     </AuthProvider>
-  )
+  );
 }
 
-export default App
+export default App;
