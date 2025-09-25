@@ -1,13 +1,14 @@
 import React, { useState } from "react";
 import "./SignupForm.css";
 import { NavLink, useNavigate } from "react-router-dom";
+import API_BASE_URL from "../../config/api.js";
 
 const SignUpForm = () => {
   const [nom, setNom] = useState("");
   const [email, setEmail] = useState("");
   const [motDePasse, setMotDePasse] = useState("");
   const [confirmMdp, setConfirmMdp] = useState("");
-  const [role, setRole] = useState("client"); // valeur par défaut
+  const [role, setRole] = useState("client");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
 
@@ -20,7 +21,7 @@ const SignUpForm = () => {
     }
 
     try {
-      const res = await fetch("http://localhost:5000/auth/signup", {
+      const res = await fetch(`${API_BASE_URL}/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ nom, email, mot_de_passe: motDePasse, role }),

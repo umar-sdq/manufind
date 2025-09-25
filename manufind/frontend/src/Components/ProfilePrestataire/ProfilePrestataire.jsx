@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useAuth } from "../AuthContext/AuthContext.jsx";
 import "./Profile.css";
+import API_BASE_URL from "../../config/api.js";
 
 const ProfilePrestataire = () => {
   const { authData, login } = useAuth();
@@ -13,7 +14,7 @@ const ProfilePrestataire = () => {
   async function handleUpdate(e) {
     e.preventDefault();
     try {
-      const response = await fetch("http://localhost:5000/auth/update", {
+      const response = await fetch(`${API_BASE_URL}/auth/update`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ id: authData.user.id, nom, email }),

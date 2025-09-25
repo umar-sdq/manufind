@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import { useAuth } from "./../AuthContext/AuthContext.jsx";
+import API_BASE_URL from "../../config/api.js";
 import "./LoginForm.css";
 
 const LoginForm = () => {
@@ -14,7 +15,7 @@ const LoginForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch("http://localhost:5000/auth/login", {
+      const response = await fetch(`${API_BASE_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, mot_de_passe: mdp }),
