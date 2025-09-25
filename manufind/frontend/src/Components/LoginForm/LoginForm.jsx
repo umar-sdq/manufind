@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
 import { useAuth } from "./../AuthContext/AuthContext.jsx";
-import './LoginForm.css'
+import "./LoginForm.css";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
@@ -37,12 +37,12 @@ const LoginForm = () => {
     <div className="login-form">
       <form onSubmit={handleSubmit}>
         <h2>Re-Bienvenue!</h2>
-        <h4>Nom d'utilisateur</h4>
+        <h4>Courriel éléctronique</h4>
         <input
           type="text"
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="Nom d'utilisateur"
+          placeholder="courriel éléctronique"
         />
         <h4>Mot de passe</h4>
         <input
