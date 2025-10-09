@@ -8,6 +8,8 @@ const RequestCard = () => {
   const [description, setDescription] = useState("");
   const [adresse, setAdresse] = useState("");
   const [codePostal, setCodePostal] = useState("");
+  const [dateHeure, setDateHeure] = useState(""); // ajout
+  const [dureeEstimee, setDureeEstimee] = useState(60); // ajout
   const [message, setMessage] = useState("");
 
   const categories = [
@@ -31,17 +33,20 @@ const RequestCard = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    if (!authData?.user?.id && !authData?.user?._id) {
+    const userId = authData?.user?.id || authData?.user?._id;
+    if (!userId) {
       setMessage("Veuillez vous connecter avant de créer une demande.");
       return;
     }
 
     const newRequest = {
-      clientId: authData.user.id || authData.user._id,
+      client_id: userId,
       categorie,
       description,
       adresse,
-      codePostal,
+      code_postal: codePostal,
+      date_heure: dateHeure || null,
+      duree_estimee: dureeEstimee || 60,
     };
 
     try {
@@ -50,17 +55,20 @@ const RequestCard = () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newRequest),
       });
+
       if (res.ok) {
-        setMessage(" Demande créée avec succès !");
+        setMessage("✅ Demande créée avec succès !");
         setCategorie("");
         setDescription("");
         setAdresse("");
         setCodePostal("");
+        setDateHeure("");
       } else {
-        setMessage(" Erreur lors de la création de la demande.");
+        const err = await res.json();
+        setMessage("❌ Erreur : " + (err.message || "Création échouée"));
       }
-    } catch {
-      setMessage(" Erreur lors de la création de la demande.");
+    } catch (error) {
+      setMessage("⚠️ Erreur de connexion au serveur.");
     }
   };
 
@@ -68,6 +76,7 @@ const RequestCard = () => {
     <div className="login-form">
       <form onSubmit={handleSubmit}>
         <h2>Demande de service</h2>
+
         <h4>Catégorie de service</h4>
         <select
           value={categorie}
@@ -81,6 +90,7 @@ const RequestCard = () => {
             </option>
           ))}
         </select>
+
         <h4>Description</h4>
         <input
           type="text"
@@ -89,6 +99,7 @@ const RequestCard = () => {
           onChange={(e) => setDescription(e.target.value)}
           required
         />
+
         <h4>Adresse</h4>
         <input
           type="text"
@@ -97,6 +108,7 @@ const RequestCard = () => {
           onChange={(e) => setAdresse(e.target.value)}
           required
         />
+
         <h4>Code postal</h4>
         <input
           type="text"
@@ -105,8 +117,26 @@ const RequestCard = () => {
           onChange={(e) => setCodePostal(e.target.value)}
           required
         />
+
+        <h4>Date et heure (optionnel)</h4>
+        <input
+          type="datetime-local"
+          value={dateHeure}
+          onChange={(e) => setDateHeure(e.target.value)}
+        />
+
+        <h4>Durée estimée (minutes)</h4>
+        <input
+          type="number"
+          value={dureeEstimee}
+          onChange={(e) => setDureeEstimee(e.target.value)}
+          min="15"
+          max="480"
+        />
+
         <button type="submit">Créer la demande</button>
         {message && <p>{message}</p>}
+
         <h4>
           Pas encore membre ? <NavLink to="/signup">Créer un compte.</NavLink>
         </h4>
