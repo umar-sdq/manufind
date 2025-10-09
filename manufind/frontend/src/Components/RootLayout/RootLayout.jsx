@@ -5,7 +5,7 @@ import './RootLayout.css';
 
 const RootLayout = () => {
   return (
-    <div>
+    <div className="app-container">
       <Header />
       <main>
         <Outlet />
