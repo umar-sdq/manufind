@@ -1,6 +1,7 @@
 import "./Header.css";
 import { NavLink } from "react-router-dom";
 import logo from "../../assets/images/ManuFind.png";
+import { useAuth } from "../AuthContext/AuthContext";
 
 const Header = () => {
   const { authData, logout } = useAuth();

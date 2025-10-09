@@ -8,6 +8,6 @@ app.use(express.json());
 
 const authRoutes = require("./routes/auth");
 app.use("/auth", authRoutes);
-app.use("/api/demandes", demandeRoutes);
+app.use("/demandes", demandeRoutes);
 
 module.exports = app;
