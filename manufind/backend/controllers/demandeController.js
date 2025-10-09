@@ -1,5 +1,48 @@
-// controllers/DemandeController.js
-import db from "../models/UserModel.js"; // Changer vers UserModel.js car config/db.js n'existe pas
+import db from "../models/UserModel.js";
+
+/**
+ * @route GET /api/demandes
+ * @desc Récupérer toutes les demandes avec info client et prestataire
+ */
+export const getDemandes = async (req, res) => {
+  try {
+    const sql = `
+      SELECT 
+        d.id,
+        d.categorie,
+        d.description,
+        d.adresse,
+        d.code_postal,
+        d.date_heure,
+        d.duree_estimee,
+        d.statut,
+        d.date_creation,
+        u.nom AS client_nom,
+        p.id AS prestataire_id,
+        up.nom AS prestataire_nom
+      FROM demandes d
+      JOIN utilisateurs u ON d.client_id = u.id
+      LEFT JOIN prestataires p ON d.prestataire_id = p.id
+      LEFT JOIN utilisateurs up ON p.utilisateur_id = up.id
+      ORDER BY d.date_creation DESC
+    `;
+
+    const [rows] = await db.execute(sql);
+
+    res.status(200).json({
+      success: true,
+      count: rows.length,
+      demandes: rows,
+    });
+  } catch (error) {
+    console.error("Erreur lors de la récupération des demandes :", error);
+    res.status(500).json({
+      success: false,
+      message: "Erreur serveur",
+      error: error.message,
+    });
+  }
+};
 
 /**
  * @route POST /api/demandes/afficher
@@ -47,7 +90,7 @@ export const afficherDemandes = async (req, res) => {
 
     sql += " ORDER BY d.date_creation DESC";
 
-    const [rows] = await db.query(sql, params);
+    const [rows] = await db.execute(sql, params);
 
     res.status(200).json({
       success: true,
@@ -59,7 +102,7 @@ export const afficherDemandes = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Erreur serveur",
-      error,
+      error: error.message,
     });
   }
 };
@@ -80,7 +123,6 @@ export const ajouterDemande = async (req, res) => {
       duree_estimee,
     } = req.body;
 
-    // Validation basique - rendre date_heure optionnel
     if (!client_id || !categorie || !description) {
       return res.status(400).json({
         success: false,
@@ -89,7 +131,6 @@ export const ajouterDemande = async (req, res) => {
       });
     }
 
-    // Si date_heure n'est pas fournie, utiliser la date actuelle + 1 heure
     const dateHeure =
       date_heure ||
       new Date(Date.now() + 60 * 60 * 1000)
@@ -111,25 +152,15 @@ export const ajouterDemande = async (req, res) => {
       adresse || null,
       code_postal || null,
       dateHeure,
-      duree_estimee || 60, // durée par défaut de 60 minutes
+      duree_estimee || 60,
     ];
 
-    // Utiliser db.query avec callback au lieu de await
-    db.query(sql, params, (err, result) => {
-      if (err) {
-        console.error("Erreur lors de l'ajout de la demande :", err);
-        return res.status(500).json({
-          success: false,
-          message: "Erreur serveur",
-          error: err.message,
-        });
-      }
+    const [result] = await db.execute(sql, params);
 
-      res.status(201).json({
-        success: true,
-        message: "Demande ajoutée avec succès.",
-        demande_id: result.insertId,
-      });
+    res.status(201).json({
+      success: true,
+      message: "Demande ajoutée avec succès.",
+      demande_id: result.insertId,
     });
   } catch (error) {
     console.error("Erreur lors de l'ajout de la demande :", error);
@@ -165,7 +196,6 @@ export const modifierDemande = async (req, res) => {
         .json({ success: false, message: "ID de la demande manquant." });
     }
 
-    // Construction dynamique des champs à modifier
     const fields = [];
     const values = [];
 
@@ -211,7 +241,7 @@ export const modifierDemande = async (req, res) => {
     const sql = `UPDATE demandes SET ${fields.join(", ")} WHERE id = ?`;
     values.push(id);
 
-    const [result] = await db.query(sql, values);
+    const [result] = await db.execute(sql, values);
 
     if (result.affectedRows === 0) {
       return res
@@ -224,9 +254,14 @@ export const modifierDemande = async (req, res) => {
       .json({ success: true, message: "Demande mise à jour avec succès." });
   } catch (error) {
     console.error("Erreur lors de la modification :", error);
-    res.status(500).json({ success: false, message: "Erreur serveur", error });
+    res.status(500).json({
+      success: false,
+      message: "Erreur serveur",
+      error: error.message,
+    });
   }
 };
+
 /**
  * @route DELETE /api/demandes/supprimer/:id
  * @desc Supprimer une demande existante
@@ -242,7 +277,9 @@ export const supprimerDemande = async (req, res) => {
       });
     }
 
-    const [result] = await db.query("DELETE FROM demandes WHERE id = ?", [id]);
+    const [result] = await db.execute("DELETE FROM demandes WHERE id = ?", [
+      id,
+    ]);
 
     if (result.affectedRows === 0) {
       return res.status(404).json({
@@ -257,50 +294,6 @@ export const supprimerDemande = async (req, res) => {
     });
   } catch (error) {
     console.error("Erreur lors de la suppression :", error);
-    res.status(500).json({
-      success: false,
-      message: "Erreur serveur",
-      error,
-    });
-  }
-};
-
-/**
- * @route GET /api/demandes
- * @desc Récupérer toutes les demandes avec info client et prestataire
- */
-export const getDemandes = async (req, res) => {
-  try {
-    const sql = `
-      SELECT 
-        d.id,
-        d.categorie,
-        d.description,
-        d.adresse,
-        d.code_postal,
-        d.date_heure,
-        d.duree_estimee,
-        d.statut,
-        d.date_creation,
-        u.nom AS client_nom,
-        p.id AS prestataire_id,
-        up.nom AS prestataire_nom
-      FROM demandes d
-      JOIN utilisateurs u ON d.client_id = u.id
-      LEFT JOIN prestataires p ON d.prestataire_id = p.id
-      LEFT JOIN utilisateurs up ON p.utilisateur_id = up.id
-      ORDER BY d.date_creation DESC
-    `;
-
-    const [rows] = await db.query(sql);
-
-    res.status(200).json({
-      success: true,
-      count: rows.length,
-      demandes: rows,
-    });
-  } catch (error) {
-    console.error("Erreur lors de la récupération des demandes :", error);
     res.status(500).json({
       success: false,
       message: "Erreur serveur",

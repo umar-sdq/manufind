@@ -1,4 +1,3 @@
-// routes/demande.js
 import express from "express";
 import {
   getDemandes,
@@ -6,13 +5,13 @@ import {
   ajouterDemande,
   modifierDemande,
   supprimerDemande,
-} from "../controllers/DemandeController.js";
+} from "../controllers/demandeController.js"; // corriger la casse
 
 const router = express.Router();
 router.get("/", getDemandes);
 router.post("/afficher", afficherDemandes);
 router.post("/ajouter", ajouterDemande);
 router.put("/modifier/:id", modifierDemande);
-router.delete("/supprimer/:id", supprimerDemande); // ✅ nouvelle route
+router.delete("/supprimer/:id", supprimerDemande);
 
 export default router;
