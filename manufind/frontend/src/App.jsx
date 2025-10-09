@@ -1,6 +1,4 @@
-import { useState } from "react";
-import reactLogo from "./assets/react.svg";
-import viteLogo from "/vite.svg";
+
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./Components/RootLayout/RootLayout.jsx";
@@ -15,6 +13,7 @@ import About from "./Components/About/About.jsx";
 import Contact from "./Components/Contact/Contact.jsx";
 import Services from "./Components/Services/Services.jsx";
 import { AuthProvider } from "./Components/AuthContext/AuthContext.jsx";
+import RequestCard from "./Components/RequestCard/RequestCard.jsx";
 function App() {
   const router = createBrowserRouter([
     {
@@ -31,6 +30,8 @@ function App() {
         { path: "/map", element: <Carte /> },
         { path: "/profile-client", element: <ProfileClient /> },
         { path: "/profile-pres", element: <ProfilePrestataire /> },
+        { path: "/request-service", element: <RequestCard /> }
+
       ],
     },
   ]);

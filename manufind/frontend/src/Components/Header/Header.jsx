@@ -1,6 +1,6 @@
 import "./Header.css";
 import { NavLink } from "react-router-dom";
-import logo from "../../assets/images/ManuFind.png"; 
+import logo from "../../assets/images/ManuFind.png";
 
 const Header = () => {
   return (
@@ -15,8 +15,10 @@ const Header = () => {
         <NavLink to={"/contact"}>Contact</NavLink>
         <NavLink to={"/services"}>Services</NavLink>
         <NavLink to={"/map"}>Map</NavLink>
+        <NavLink to={"/request-service"}>Faire une demande</NavLink>
+
       </div>
-      <div className="account-links">    
+      <div className="account-links">
         <NavLink to={"/login"}>Connexion</NavLink>
         <NavLink to={"/signup"}>Inscription</NavLink>
       </div>
