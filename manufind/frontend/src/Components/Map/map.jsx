@@ -78,7 +78,7 @@ const Carte = () => {
         <button type="submit">OK</button>
       </form>
 
-      <MapContainer center={[45.5, -73.56]} zoom={13} className="map-container">
+      <MapContainer center={[45.52, -73.76]} zoom={13} className="map-container">
         <TileLayer
           attribution='&copy; <a href="https://osm.org">OpenStreetMap</a> contributors'
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"

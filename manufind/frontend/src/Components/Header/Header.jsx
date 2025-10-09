@@ -1,6 +1,5 @@
 import "./Header.css";
 import { NavLink } from "react-router-dom";
-import { useAuth } from "../AuthContext/AuthContext.jsx";
 import logo from "../../assets/images/ManuFind.png";
 
 const Header = () => {
