@@ -21,8 +21,12 @@ const Header = () => {
         <NavLink to={"/about"}>A propos</NavLink>
         <NavLink to={"/contact"}>Contact</NavLink>
         <NavLink to={"/services"}>Services</NavLink>
-        <NavLink to={"/map"}>Map</NavLink>
-        {authData && <NavLink to={"/request-service"}>Requête</NavLink>}
+        {authData && authData.user.role === "prestataire" && (
+          <NavLink to={"/map"}>Map</NavLink>
+        )}
+        {authData && authData.user.role === "client" && (
+          <NavLink to={"/request-service"}>Requête</NavLink>
+        )}
       </div>
       <div className="account-links">
         {authData ? (
