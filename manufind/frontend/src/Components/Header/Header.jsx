@@ -1,8 +1,15 @@
 import "./Header.css";
 import { NavLink } from "react-router-dom";
-import logo from "../../assets/images/ManuFind.png"; 
+import { useAuth } from "../AuthContext/AuthContext.jsx";
+import logo from "../../assets/images/ManuFind.png";
 
 const Header = () => {
+  const { authData, logout } = useAuth();
+
+  const handleLogout = () => {
+    logout();
+  };
+
   return (
     <div className="header">
       <div className="titre">
@@ -16,12 +23,31 @@ const Header = () => {
         <NavLink to={"/services"}>Services</NavLink>
         <NavLink to={"/map"}>Map</NavLink>
       </div>
-      <div className="account-links">    
-        <NavLink to={"/login"}>Connexion</NavLink>
-        <NavLink to={"/signup"}>Inscription</NavLink>
+      <div className="account-links">
+        {authData ? (
+          <>
+            <NavLink
+              to={
+                authData.user.role === "client"
+                  ? "/profile-client"
+                  : "/profile-pres"
+              }
+            >
+              Mon Profil
+            </NavLink>
+            <button onClick={handleLogout} className="logout-btn">
+              Déconnexion
+            </button>
+          </>
+        ) : (
+          <>
+            <NavLink to={"/login"}>Connexion</NavLink>
+            <NavLink to={"/signup"}>Inscription</NavLink>
+          </>
+        )}
       </div>
     </div>
   );
-}
+};
 
 export default Header;
