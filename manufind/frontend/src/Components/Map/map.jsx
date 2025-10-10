@@ -1,12 +1,5 @@
 import React, { useState, useEffect } from "react";
-import {
-  MapContainer,
-  TileLayer,
-  Marker,
-  Popup,
-  useMap,
-  useMapEvents,
-} from "react-leaflet";
+import { MapContainer, TileLayer, Marker, Popup, useMap } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
 import "./map.css";
@@ -28,15 +21,6 @@ const demandeIcon = new L.Icon({
   popupAnchor: [0, -32],
 });
 
-function AddMarkerOnClick({ setMarkers }) {
-  useMapEvents({
-    click(e) {
-      setMarkers((prev) => [...prev, e.latlng]);
-    },
-  });
-  return null;
-}
-
 function RecenterMap({ lat, lng }) {
   const map = useMap();
   if (lat && lng) {
@@ -52,7 +36,6 @@ const Carte = () => {
   const [searchResult, setSearchResult] = useState(null);
   const [loading, setLoading] = useState(true);
 
-  // Récupérer toutes les demandes au chargement
   useEffect(() => {
     fetchDemandes();
   }, []);
@@ -63,7 +46,6 @@ const Carte = () => {
       const data = await response.json();
 
       if (data.success) {
-        // Géocoder chaque demande pour obtenir les coordonnées
         const demandesAvecCoords = await Promise.all(
           data.demandes.map(async (demande) => {
             if (demande.adresse) {
@@ -73,7 +55,6 @@ const Carte = () => {
             return demande;
           })
         );
-
         setDemandes(demandesAvecCoords.filter((d) => d.coordinates));
       }
     } catch (error) {
@@ -83,7 +64,6 @@ const Carte = () => {
     }
   };
 
-  // Fonction pour géocoder une adresse
   const geocodeAddress = async (address) => {
     try {
       const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
@@ -176,9 +156,7 @@ const Carte = () => {
           url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
         />
 
-        <AddMarkerOnClick setMarkers={setMarkers} />
-
-        {/* Marqueurs de recherche */}
+        {/* Marqueurs de recherche (pas d'ajout au clic) */}
         {markers.map((pos, idx) => (
           <Marker key={idx} position={pos} icon={customIcon}></Marker>
         ))}
