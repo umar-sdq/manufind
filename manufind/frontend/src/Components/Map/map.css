@@ -12,23 +12,32 @@
 
 .search-bar {
   position: absolute;
-  top: 15px;
-  left: 60px;
+  top: 25px;
+  left: 50%;
+  transform: translateX(-50%);
   z-index: 1000;
   display: flex;
-  gap: 5px;
-  background: rgb(255, 255, 255);
+  gap: 6px;
+  background: rgba(255, 255, 255, 0.95);
   padding: 6px 10px;
-  border-radius: 8px;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+  transition: box-shadow 0.2s ease;
+}
+
+.search-bar:focus-within {
+  box-shadow: 0 0 10px rgba(46, 204, 113, 0.5);
 }
 
 .search-bar input {
   border: none;
   outline: none;
-  padding: 5px;
-  min-width: 200px;
+  padding: 5px 8px;
+  min-width: 220px;
   color: #333;
+  font-size: 14px;
+  border-radius: 6px;
+  background: transparent;
 }
 
 .search-bar input::placeholder {
@@ -38,15 +47,17 @@
 .search-bar button {
   background: #2ecc71;
   border: none;
-  padding: 5px 10px;
-  border-radius: 6px;
+  padding: 5px 12px;
+  border-radius: 8px;
   cursor: pointer;
   color: white;
   font-weight: bold;
+  transition: all 0.3s ease;
 }
 
 .search-bar button:hover {
   background: #27ae60;
+  transform: translateY(-1px);
 }
 
 .loading-overlay {
@@ -59,35 +70,142 @@
   color: white;
   padding: 20px;
   border-radius: 8px;
+  font-size: 14px;
 }
 
 .demande-popup {
-  min-width: 250px;
-  max-width: 300px;
+  min-width: 260px;
+  max-width: 320px;
+  font-family: "Inter", sans-serif;
+  color: #e8e8e8;
+  background: #121212;
+  border-radius: 10px;
+  padding: 10px;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.6);
 }
 
 .demande-popup h3 {
   margin: 0 0 10px 0;
-  color: #2c3e50;
-  border-bottom: 1px solid #eee;
+  font-size: 16px;
+  color: #2ecc71;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
   padding-bottom: 5px;
 }
 
 .demande-details p {
-  margin: 5px 0;
+  margin: 4px 0;
   font-size: 12px;
-  line-height: 1.4;
+  line-height: 1.5;
+  color: #d1d1d1;
 }
 
 .demande-details strong {
-  color: #34495e;
+  color: #ffffff;
+  font-weight: 600;
 }
 
 .status-badge {
-  color: white;
-  padding: 2px 6px;
+  color: #fff;
+  padding: 3px 6px;
   border-radius: 4px;
   font-size: 10px;
   margin-left: 5px;
   text-transform: uppercase;
+  font-weight: 600;
+  background: #2ecc71;
+}
+.leaflet-popup-content-wrapper {
+  background: #121212 !important;
+  color: #e8e8e8 !important;
+  border-radius: 12px !important;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 4px 25px rgba(0, 0, 0, 0.6) !important;
+}
+
+.leaflet-popup-content {
+  margin: 10px 14px !important;
+}
+
+.leaflet-popup-tip {
+  background: #121212 !important;
+}
+
+.leaflet-popup-close-button {
+  color: #aaa !important;
+  transition: color 0.2s ease;
+}
+
+.leaflet-popup-close-button:hover {
+  color: #2ecc71 !important;
+}
+.demande-popup-essentiel {
+  min-width: 220px;
+  font-family: "Inter", sans-serif;
+  background: #121212;
+  color: #f1f1f1;
+  text-align: left;
+}
+
+.demande-popup-essentiel h3 {
+  font-size: 15px;
+  font-weight: 600;
+  color: #2ecc71;
+  margin-bottom: 6px;
+}
+
+/* Ici, séparé */
+.demande-popup-essentiel h3::first-letter {
+  text-transform: uppercase;
+}
+
+
+.demande-popup-essentiel .adresse {
+  font-size: 12px;
+  color: #ccc;
+  margin-bottom: 4px;
+}
+
+.demande-popup-essentiel .duree {
+  font-size: 12px;
+  color: #999;
+  margin-bottom: 10px;
+}
+
+.popup-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+}
+
+.btn-accept,
+.btn-view {
+  flex: 1;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+}
+
+.btn-accept {
+  background: #2ecc71;
+  color: #fff;
+  font-weight: 600;
+}
+
+.btn-accept:hover {
+  background: #27ae60;
+}
+
+.btn-view {
+  background: #1f1f1f;
+  border: 1px solid #2ecc71;
+  color: #2ecc71;
+  font-weight: 500;
+}
+
+.btn-view:hover {
+  background: #2ecc71;
+  color: #fff;
 }
