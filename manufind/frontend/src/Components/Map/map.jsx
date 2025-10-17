@@ -23,9 +23,24 @@ const demandeIcon = new L.Icon({
 
 function RecenterMap({ lat, lng }) {
   const map = useMap();
-  if (lat && lng) {
-    map.setView([lat, lng], 20);
-  }
+  useEffect(() => {
+    if (lat && lng) {
+      map.flyTo([lat, lng], 17, {
+        animate: true,
+        duration: 1.5,
+        easeLinearity: 0.25,
+      });
+
+      const mapPane = map.getPanes().mapPane;
+      mapPane.style.transition = "transform 1s ease";
+      mapPane.style.transform = "rotate(1.5deg)";
+
+      setTimeout(() => {
+        mapPane.style.transform = "rotate(0deg)";
+      }, 1000);
+    }
+  }, [lat, lng, map]);
+
   return null;
 }
 
@@ -152,9 +167,10 @@ const Carte = () => {
         className="map-container"
       >
         <TileLayer
-          attribution='&copy; <a href="https://osm.org">OpenStreetMap</a> contributors'
-          url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-        />
+  attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>'
+  url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+/>
+
 
         {/* Marqueurs de recherche (pas d'ajout au clic) */}
         {markers.map((pos, idx) => (
