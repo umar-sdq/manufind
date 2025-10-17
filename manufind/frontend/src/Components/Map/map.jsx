@@ -23,7 +23,6 @@ const demandeIcon = new L.Icon({
 
 function RecenterMap({ lat, lng }) {
   const map = useMap();
-
   useEffect(() => {
     if (lat && lng) {
       map.flyTo([lat, lng], 17, {
@@ -35,6 +34,7 @@ function RecenterMap({ lat, lng }) {
       const mapPane = map.getPanes().mapPane;
       mapPane.style.transition = "transform 1s ease";
       mapPane.style.transform = "rotate(1.5deg)";
+
       setTimeout(() => {
         mapPane.style.transform = "rotate(0deg)";
       }, 1000);
@@ -167,9 +167,10 @@ const Carte = () => {
         className="map-container"
       >
         <TileLayer
-          attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>'
-          url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
-        />
+  attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>'
+  url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+/>
+
 
         {markers.map((pos, idx) => (
           <Marker key={idx} position={pos} icon={customIcon}></Marker>
