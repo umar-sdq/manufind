@@ -2,7 +2,7 @@
   position: relative;
   width: 100%;
   height: 100vh;
-  background: #101214;
+  background: #0f0f0f;
   border-radius: 16px;
   overflow: hidden;
   box-shadow: 0 4px 25px rgba(0, 0, 0, 0.35);
@@ -12,12 +12,13 @@
   width: 100%;
   height: 100%;
   border-radius: 16px;
-  filter: brightness(0.92) contrast(1.08) saturate(0.9);
+  filter: brightness(0.95) contrast(1.05);
 }
 
+/* Barre de recherche */
 .search-bar {
   position: absolute;
-  top: 35px; 
+  top: 35px;
   left: 50%;
   transform: translateX(-50%);
   z-index: 1000;
@@ -26,17 +27,17 @@
   align-items: center;
   gap: 8px;
 
-  background: rgba(25, 27, 30, 0.9);
+  background: rgba(20, 22, 24, 0.95);
   backdrop-filter: blur(8px);
   padding: 7px 14px;
   border-radius: 12px;
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35);
-  transition: box-shadow 0.25s ease-in-out, background 0.25s ease;
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.4);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: all 0.25s ease-in-out;
 }
 
 .search-bar:hover {
-  background: rgba(30, 32, 36, 0.92);
+  background: rgba(25, 27, 30, 0.96);
 }
 
 .search-bar:focus-within {
@@ -55,7 +56,7 @@
 }
 
 .search-bar input::placeholder {
-  color: #999;
+  color: #aaa;
 }
 
 .search-bar button {
@@ -71,10 +72,11 @@
 }
 
 .search-bar button:hover {
-  background: linear-gradient(135deg, #1e8e4b, #2ecc71);
+  background: linear-gradient(135deg, #1f8e4c, #2ecc71);
   transform: translateY(-1px);
 }
 
+/* Overlay de chargement */
 .loading-overlay {
   position: absolute;
   top: 50%;
@@ -101,38 +103,113 @@
   }
 }
 
-.demande-popup {
-  min-width: 260px;
-  max-width: 320px;
+.demande-popup-essentiel {
   font-family: "Inter", sans-serif;
-  color: #000000;
+  background: #0e0e0e;
+  color: #f1f1f1;
+  text-align: left;
+  padding: 12px 14px;
+  border-radius: 10px;
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.45);
 }
 
-.demande-popup h3 {
-  margin: 0 0 10px 0;
-  font-size: 16px;
+/* Catégorie */
+.demande-popup-essentiel h3 {
+  font-size: 15px;
+  font-weight: 600;
   color: #2ecc71;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-  padding-bottom: 5px;
+  margin-bottom: 8px;
+  text-transform: capitalize;
+  letter-spacing: 0.3px;
 }
 
-.demande-details p {
-  margin: 4px 0;
+/* Adresse */
+.demande-popup-essentiel .adresse {
   font-size: 12px;
-  line-height: 1.5;
-  color: #000000;
+  color: #cfcfcf;
+  margin-bottom: 4px;
+  line-height: 1.4;
 }
 
-.demande-details strong {
-  color: #fff;
+/* Détails (code postal, durée) */
+.demande-popup-essentiel .duree {
+  font-size: 12px;
+  color: #a5a5a5;
+  margin-bottom: 6px;
+  line-height: 1.4;
 }
 
-.status-badge {
-  color: rgb(0, 0, 0);
-  padding: 3px 6px;
-  border-radius: 4px;
-  font-size: 10px;
-  margin-left: 5px;
-  text-transform: uppercase;
+/* Boutons d’action */
+.popup-actions {
+  display: flex;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.btn-accept,
+.btn-view {
+  flex: 1;
+  padding: 6px 10px;
+  border: none;
+  border-radius: 6px;
+  font-size: 13px;
+  cursor: pointer;
+  transition: all 0.25s ease;
   font-weight: 600;
 }
+
+/* Bouton "Accepter" */
+.btn-accept {
+  background: linear-gradient(135deg, #27ae60, #2ecc71);
+  color: #fff;
+  box-shadow: 0 2px 6px rgba(46, 204, 113, 0.35);
+}
+
+.btn-accept:hover {
+  background: linear-gradient(135deg, #1f8e4c, #27ae60);
+  transform: translateY(-1px);
+}
+
+/* Bouton "Voir détails" */
+.btn-view {
+  background: #1f1f1f;
+  border: 1px solid #2ecc71;
+  color: #2ecc71;
+}
+
+.btn-view:hover {
+  background: #2ecc71;
+  color: #0f0f0f;
+}
+
+/* Popup Leaflet */
+.leaflet-popup-content-wrapper {
+  background: #0e0e0e !important;
+  color: #f1f1f1 !important;
+  border-radius: 10px !important;
+  border: 1px solid rgba(255, 255, 255, 0.05);
+  box-shadow: 0 6px 25px rgba(0, 0, 0, 0.5) !important;
+}
+
+.leaflet-popup-content {
+  margin: 8px 10px !important;
+  font-family: "Inter", sans-serif !important;
+}
+
+.leaflet-popup-tip {
+  background: #0e0e0e !important;
+}
+
+.leaflet-popup-close-button {
+  color: #999 !important;
+  font-size: 18px;
+  top: 5px !important;
+  right: 6px !important;
+  transition: color 0.2s ease;
+}
+
+.leaflet-popup-close-button:hover {
+  color: #2ecc71 !important;
+}
+
