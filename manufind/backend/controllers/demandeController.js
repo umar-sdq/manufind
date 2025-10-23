@@ -108,6 +108,67 @@ export const afficherDemandes = async (req, res) => {
 };
 
 /**
+ * @route GET /api/demandes/:id
+ * @desc Récupérer une demande spécifique par ID
+ */
+export const getDemandeById = async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).json({
+        success: false,
+        message: "ID de la demande manquant.",
+      });
+    }
+
+    const sql = `
+      SELECT 
+        d.id,
+        d.categorie,
+        d.description,
+        d.adresse,
+        d.code_postal,
+        d.date_heure,
+        d.duree_estimee,
+        d.statut,
+        d.date_creation,
+        u.nom AS client_nom,
+        u.email AS client_email,
+        p.id AS prestataire_id,
+        up.nom AS prestataire_nom,
+        up.email AS prestataire_email
+      FROM demandes d
+      JOIN utilisateurs u ON d.client_id = u.id
+      LEFT JOIN prestataires p ON d.prestataire_id = p.id
+      LEFT JOIN utilisateurs up ON p.utilisateur_id = up.id
+      WHERE d.id = ?
+    `;
+
+    const [rows] = await db.execute(sql, [id]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Aucune demande trouvée avec cet ID.",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      demande: rows[0],
+    });
+  } catch (error) {
+    console.error("Erreur lors de la récupération de la demande :", error);
+    res.status(500).json({
+      success: false,
+      message: "Erreur serveur",
+      error: error.message,
+    });
+  }
+};
+
+/**
  * @route POST /api/demandes/ajouter
  * @desc Ajouter une nouvelle demande de service
  */
@@ -297,6 +358,70 @@ export const supprimerDemande = async (req, res) => {
     res.status(500).json({
       success: false,
       message: "Erreur serveur",
+      error: error.message,
+    });
+  }
+};
+/**
+ * @route PUT /api/demandes/accepter/:id
+ * @desc Accepter une demande et assigner un prestataire
+ */
+export const accepterDemande = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { prestataire_id } = req.body;
+
+    if (!id || !prestataire_id) {
+      return res.status(400).json({
+        success: false,
+        message: "ID de la demande ou du prestataire manquant.",
+      });
+    }
+
+    // Vérifie si la demande existe
+    const [demandeRows] = await db.execute(
+      "SELECT * FROM demandes WHERE id = ?",
+      [id]
+    );
+    if (demandeRows.length === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Demande introuvable.",
+      });
+    }
+
+    // Vérifie si la demande est déjà acceptée
+    if (demandeRows[0].statut === "acceptée") {
+      return res.status(400).json({
+        success: false,
+        message: "Cette demande est déjà acceptée.",
+      });
+    }
+
+    // Met à jour la demande
+    const sql = `
+      UPDATE demandes 
+      SET statut = 'acceptée', prestataire_id = ? 
+      WHERE id = ?
+    `;
+    const [result] = await db.execute(sql, [prestataire_id, id]);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({
+        success: false,
+        message: "Aucune mise à jour effectuée.",
+      });
+    }
+
+    res.status(200).json({
+      success: true,
+      message: `Demande #${id} acceptée avec succès.`,
+    });
+  } catch (error) {
+    console.error("Erreur lors de l'acceptation de la demande :", error);
+    res.status(500).json({
+      success: false,
+      message: "Erreur serveur.",
       error: error.message,
     });
   }
