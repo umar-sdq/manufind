@@ -3,7 +3,7 @@ import "./About.css";
 import imgClient from "../../assets/images/icon-client.png";
 import mapBack from "../../assets/images/map-back.png";
 import imgWorker from "../../assets/images/reno-pic.png";
-
+import { NavLink } from "react-router-dom";
 const About = () => {
   return (
     <div className="about-page">
@@ -15,7 +15,8 @@ const About = () => {
             Publiez facilement une demande de service et trouvez un travailleur
             qualifié près de chez vous.
           </p>
-          <a href="/signup">Créer un compte →</a>
+            <NavLink to={"/signup"}>Créer un compte →</NavLink>
+ 
         </div>
 
         <div className="about-card">
@@ -24,7 +25,7 @@ const About = () => {
             Acceptez des demandes selon vos compétences et votre horaire. Gagnez
             de nouveaux clients facilement.
           </p>
-          <a href="/signup">Rejoindre ManuFind →</a>
+            <NavLink to={"/signup"}>Rejoindre Manufind →</NavLink>
         </div>
 
         <div className="about-card">
@@ -33,7 +34,7 @@ const About = () => {
             Visualisez toutes les demandes actives sur une carte et trouvez
             rapidement celles proches de vous.
           </p>
-          <a href="/map">Voir la carte →</a>
+            <NavLink to={"/map"}>Voir la carte →</NavLink>
         </div>
       </section>
 
