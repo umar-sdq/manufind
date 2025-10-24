@@ -21,8 +21,7 @@ function App() {
       element: <RootLayout />,
       errorElement: <ErrorPage />,
       children: [
-        { path: "/", element: <MainPage /> },
-        { path: "/about", element: <About /> },
+        { path: "/", element: <About /> },
         { path: "/contact", element: <Contact /> },
         { path: "/services", element: <Services /> },
         { path: "/login", element: <LoginForm /> },

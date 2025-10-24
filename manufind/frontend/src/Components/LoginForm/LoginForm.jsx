@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, NavLink } from "react-router-dom";
-import { useAuth } from "./../AuthContext/AuthContext.jsx";
+import { useAuth } from "../AuthContext/AuthContext.jsx";
 import API_BASE_URL from "../../config/api.js";
 import "./LoginForm.css";
 
@@ -15,51 +15,73 @@ const LoginForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+      const res = await fetch(`${API_BASE_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, mot_de_passe: mdp }),
       });
 
-      const data = await response.json();
-      if (response.ok) {
+      const data = await res.json();
+      if (res.ok) {
         login({ token: data.token, user: data.user });
-        if (data.user.role === "client") navigate("/profile-client");
-        if (data.user.role === "prestataire") navigate("/profile-pres");
-      } else {
-        setMessage(data.error);
-      }
+        navigate(data.user.role === "client" ? "/profile-client" : "/profile-pres");
+      } else setMessage(data.error || "Informations invalides.");
     } catch {
-      setMessage("Erreur serveur");
+      setMessage("Erreur serveur. Veuillez réessayer.");
     }
   }
 
   return (
-    <div className="login-form">
-      <form onSubmit={handleSubmit}>
-        <h2>Re-Bienvenue!</h2>
-        <h4>Courriel éléctronique</h4>
-        <input
-          type="text"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="courriel éléctronique"
-        />
-        <h4>Mot de passe</h4>
-        <input
-          type="password"
-          value={mdp}
-          onChange={(e) => setMdp(e.target.value)}
-          placeholder="Mot de passe"
-        />
-        <button type="submit">Se connecter</button>
+    <div className="login-container">
+      <div className="login-form-section">
+        <h1 className="login-title">Connexion</h1>
+        <p className="login-subtitle">
+          Accédez à votre espace ManuFind et gérez vos services simplement.
+        </p>
 
-        {message && <p>{message}</p>}
+        <form onSubmit={handleSubmit} className="login-form">
+          <label>Adresse courriel</label>
+          <input
+            type="email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+            placeholder="exemple@courriel.com"
+            required
+          />
 
-        <h4>
-          Aucun compte? <NavLink to="/signup">Rejoindre la plateforme.</NavLink>
-        </h4>
-      </form>
+          <label>Mot de passe</label>
+          <input
+            type="password"
+            value={mdp}
+            onChange={(e) => setMdp(e.target.value)}
+            placeholder="••••••••"
+            required
+          />
+
+          {message && <p className="error-message">{message}</p>}
+
+          <button type="submit">Se connecter</button>
+
+          <p className="redirect-text">
+            Pas encore inscrit?{" "}
+            <NavLink to="/signup">Créer un compte.</NavLink>
+          </p>
+        </form>
+      </div>
+
+      <div className="login-info-section">
+        <h2>Re-bienvenue sur ManuFind</h2>
+        <p>
+          Trouvez des professionnels fiables ou proposez vos services
+          rapidement. La plateforme qui connecte clients et travailleurs de
+          confiance.
+        </p>
+        <ul>
+          <li>Trouvez de l’aide près de chez vous</li>
+          <li>Gagnez de nouveaux clients facilement</li>
+          <li>Une interface simple et moderne</li>
+        </ul>
+      </div>
     </div>
   );
 };
