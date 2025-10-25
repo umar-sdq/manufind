@@ -1,32 +1,39 @@
-import express from "express"
-import cors from "cors"
-import dotenv from "dotenv"
-import { signup, login, updateUser } from "./controllers/AuthController.js"
-import demandeRoutes from "./routes/demande.js"
-import { supabase } from "./supabase.js"
+// ----------------------
+// 📦 Imports
+// ----------------------
+import express from "express";
+import cors from "cors";
+import dotenv from "dotenv";
+import path from "path";
+import { fileURLToPath } from "url";
+import { signup, login, updateUser } from "./controllers/AuthController.js";
+import demandeRoutes from "./routes/demande.js";
+import { supabase } from "./supabase.js";
 
-dotenv.config()
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
-const app = express()
-app.use(cors())
-app.use(express.json())
+const app = express();
+app.use(cors());
+app.use(express.json());
 
-app.use("/demandes", demandeRoutes)
-app.post("/auth/signup", signup)
-app.post("/auth/login", login)
-app.put("/auth/update", updateUser)
+app.use("/demandes", demandeRoutes);
+app.post("/auth/signup", signup);
+app.post("/auth/login", login);
+app.put("/auth/update", updateUser);
 
-// 🧪 Test Supabase connection
 app.get("/test-supabase", async (req, res) => {
   try {
-    const { data, error } = await supabase.from("utilisateurs").select("*")
-    if (error) throw error
-    res.json({ success: true, data })
+    const { data, error } = await supabase.from("utilisateurs").select("*").limit(1);
+    if (error) throw error;
+    res.json({ success: true, data });
   } catch (err) {
-    res.status(500).json({ success: false, error: err.message })
+    res.status(500).json({ success: false, error: err.message });
   }
-})
+});
 
-app.listen(5000, () => {
-  console.log("✅ Backend running on http://localhost:5000")
-})
+const PORT = process.env.PORT || 5000;
+app.listen(PORT, () => {
+  console.log(`✅ Backend running on http://localhost:${PORT}`);
+});
