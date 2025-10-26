@@ -6,7 +6,7 @@ import "./LoginForm.css";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
-  const [mdp, setMdp] = useState("");
+  const [motDePasse, setmotDePasse] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -15,10 +15,10 @@ const LoginForm = () => {
     e.preventDefault();
 
     try {
-      const response = await fetch(`${API_BASE_URL}/auth/login`, {
+      const response = await fetch(`http://localhost:5001/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, mot_de_passe: mdp }),
+        body: JSON.stringify({ email, motDePasse }),
       });
 
       const data = await response.json();
@@ -48,8 +48,8 @@ const LoginForm = () => {
         <h4>Mot de passe</h4>
         <input
           type="password"
-          value={mdp}
-          onChange={(e) => setMdp(e.target.value)}
+          value={motDePasse}
+          onChange={(e) => setmotDePasse(e.target.value)}
           placeholder="Mot de passe"
         />
         <button type="submit">Se connecter</button>
