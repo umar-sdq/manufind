@@ -6,7 +6,7 @@ import "./LoginForm.css";
 
 const LoginForm = () => {
   const [email, setEmail] = useState("");
-  const [mdp, setMdp] = useState("");
+  const [motDePasse, setmotDePasse] = useState("");
   const [message, setMessage] = useState("");
   const navigate = useNavigate();
   const { login } = useAuth();
@@ -18,7 +18,7 @@ const LoginForm = () => {
       const res = await fetch(`${API_BASE_URL}/auth/login`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ email, mot_de_passe: mdp }),
+        body: JSON.stringify({ email, motDePasse }),
       });
 
       const data = await res.json();
@@ -52,8 +52,8 @@ const LoginForm = () => {
           <label>Mot de passe</label>
           <input
             type="password"
-            value={mdp}
-            onChange={(e) => setMdp(e.target.value)}
+            value={motDePasse}
+            onChange={(e) => setmotDePasse(e.target.value)}
             placeholder="••••••••"
             required
           />

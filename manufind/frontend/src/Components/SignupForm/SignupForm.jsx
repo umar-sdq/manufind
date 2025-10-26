@@ -24,7 +24,7 @@ const SignUpForm = () => {
       const res = await fetch(`${API_BASE_URL}/auth/signup`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ nom, email, mot_de_passe: motDePasse, role }),
+        body: JSON.stringify({ nom, email, motDePasse, role }),
       });
 
       const data = await res.json();
