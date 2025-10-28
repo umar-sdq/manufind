@@ -1,6 +1,7 @@
 import { useState } from "react";
 import { NavLink } from "react-router-dom";
 import { useAuth } from "../../Components/AuthContext/AuthContext.jsx";
+import API_BASE_URL from "../../config/api.js";
 
 const RequestCard = () => {
   const { authData } = useAuth();
@@ -8,8 +9,8 @@ const RequestCard = () => {
   const [description, setDescription] = useState("");
   const [adresse, setAdresse] = useState("");
   const [codePostal, setCodePostal] = useState("");
-  const [dateHeure, setDateHeure] = useState(""); // ajout
-  const [dureeEstimee, setDureeEstimee] = useState(60); // ajout
+  const [dateHeure, setDateHeure] = useState(""); 
+  const [dureeEstimee, setDureeEstimee] = useState(60); 
   const [message, setMessage] = useState("");
 
   const categories = [
@@ -50,11 +51,11 @@ const RequestCard = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:5000/demandes/ajouter", {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(newRequest),
-      });
+      const res = await fetch(`${API_BASE_URL}/demandes/ajouter`, {
+  method: "POST",
+  headers: { "Content-Type": "application/json" },
+  body: JSON.stringify(newRequest),
+});
 
       if (res.ok) {
         setMessage("✅ Demande créée avec succès !");
