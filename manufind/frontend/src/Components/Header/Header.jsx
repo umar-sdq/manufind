@@ -10,37 +10,29 @@ const Header = () => {
     logout();
   };
 
+  const role = authData?.role;
+
   return (
     <div className="header">
       <div className="titre">
         <img src={logo} alt="ManuFind Logo" className="header-logo" />
-        <NavLink to={"/"}>
-    Manufind
-  </NavLink>
+        <NavLink to={"/"}>Manufind</NavLink>
       </div>
+
       <div className="nav-links">
-  
-  <NavLink to={"/about"}>A propos</NavLink>
-  <NavLink to={"/contact"}>Contact</NavLink>
-  <NavLink to={"/services"}>Services</NavLink>
-  {authData && authData.user.role === "prestataire" && (
-    <NavLink to={"/map"}>Map</NavLink>
-  )}
-  {authData && authData.user.role === "client" && (
-    <NavLink to={"/request-service"}>Requête</NavLink>
-  )}
-</div>
+        <NavLink to={"/about"}>A propos</NavLink>
+        <NavLink to={"/contact"}>Contact</NavLink>
+        <NavLink to={"/services"}>Services</NavLink>
+
+        {role === "prestataire" && <NavLink to={"/map"}>Map</NavLink>}
+        {role === "prestataire" && <NavLink to={"/requests"}>Requêtes acceptées</NavLink>}
+        {role === "client" && <NavLink to={"/request-service"}>Requête</NavLink>}
+      </div>
 
       <div className="account-links">
         {authData ? (
           <>
-            <NavLink
-              to={
-                authData.user.role === "client"
-                  ? "/profile-client"
-                  : "/profile-pres"
-              }
-            >
+            <NavLink to={role === "client" ? "/profile-client" : "/profile-pres"}>
               Mon Profil
             </NavLink>
             <button onClick={handleLogout} className="logout-btn">

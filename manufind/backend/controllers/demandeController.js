@@ -1,9 +1,5 @@
 import { supabase } from "../supabase.js";
 
-/**
- * @route GET /api/demandes
- * @desc Récupérer toutes les demandes avec info client et prestataire
- */
 export const getDemandes = async (req, res) => {
   try {
     const { data, error } = await supabase
@@ -20,11 +16,8 @@ export const getDemandes = async (req, res) => {
         date_creation,
         client_id,
         prestataire_id,
-        utilisateurs:client_id (nom),
-        prestataires!demandes_prestataire_id_fkey (
-          id,
-          utilisateurs!prestataires_utilisateur_id_fkey (nom)
-        )
+        client:client_id (id, nom),
+        prestataire:prestataire_id (id, nom)
       `)
       .order("date_creation", { ascending: false });
 
@@ -37,54 +30,43 @@ export const getDemandes = async (req, res) => {
     });
   } catch (err) {
     console.error("Erreur lors de la récupération des demandes:", err.message);
-    res.status(500).json({ success: false, message: "Erreur serveur", error: err.message });
+    res.status(500).json({
+      success: false,
+      message: "Erreur serveur",
+      error: err.message,
+    });
   }
 };
+
 
 /**
  * @route POST /api/demandes/afficher
  * @desc Afficher les demandes (toutes ou filtrées)
  */
 export const afficherDemandes = async (req, res) => {
+  const { prestataire_id, statut } = req.body;
+
   try {
-    const { client_id, prestataire_id, statut } = req.body;
+    let query = supabase.from("demandes").select("*");
 
-    let query = supabase.from("demandes").select(`
-      id,
-      categorie,
-      description,
-      adresse,
-      code_postal,
-      date_heure,
-      duree_estimee,
-      statut,
-      date_creation,
-      client_id,
-      prestataire_id,
-      utilisateurs:client_id (nom),
-      prestataires!demandes_prestataire_id_fkey (
-        id,
-        utilisateurs!prestataires_utilisateur_id_fkey (nom)
-      )
-    `);
-
-    if (client_id) query = query.eq("client_id", client_id);
     if (prestataire_id) query = query.eq("prestataire_id", prestataire_id);
     if (statut) query = query.eq("statut", statut);
 
-    query = query.order("date_creation", { ascending: false });
-
     const { data, error } = await query;
+
     if (error) throw error;
 
-    res.status(200).json({
+    res.json({
       success: true,
-      count: data.length,
-      demandes: data,
+      demandes: data || []
     });
   } catch (err) {
-    console.error("Erreur lors de l'affichage des demandes:", err.message);
-    res.status(500).json({ success: false, message: "Erreur serveur", error: err.message });
+    console.error("Erreur afficherDemandes:", err);
+    res.status(500).json({
+      success: false,
+      message: "Erreur serveur",
+      error: err.message
+    });
   }
 };
 

@@ -23,7 +23,7 @@ const LoginForm = () => {
 
       const data = await res.json();
       if (res.ok) {
-        login({ token: data.token, user: data.user });
+        login(data.user);
         navigate(data.user.role === "client" ? "/profile-client" : "/profile-pres");
       } else setMessage(data.error || "Informations invalides.");
     } catch {
