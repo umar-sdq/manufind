@@ -166,10 +166,12 @@ const Carte = () => {
         zoom={13}
         className="map-container"
       >
-        <TileLayer
-  attribution='&copy; <a href="https://stadiamaps.com/">Stadia Maps</a>'
-  url="https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+<TileLayer
+  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> | &copy; <a href="https://carto.com/">CARTO</a>'
+  url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
 />
+
+
 
 
         {markers.map((pos, idx) => (
