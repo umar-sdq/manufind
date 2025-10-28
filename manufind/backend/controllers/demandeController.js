@@ -188,3 +188,46 @@ export const supprimerDemande = async (req, res) => {
     res.status(500).json({ success: false, message: "Erreur serveur", error: err.message });
   }
 };
+/**
+ * @route PUT /api/demandes/accepter/:id
+ * @desc Accepter une demande (mise à jour du statut et association au prestataire)
+ */
+export const accepterDemande = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { prestataire_id } = req.body;
+
+    if (!id || !prestataire_id) {
+      return res.status(400).json({
+        success: false,
+        message: "ID de la demande ou du prestataire manquant.",
+      });
+    }
+
+    // Met à jour la demande
+    const { data, error } = await supabase
+      .from("demandes")
+      .update({
+        statut: "acceptee",
+        prestataire_id: prestataire_id,
+      })
+      .eq("id", id)
+      .select();
+
+    if (error) throw error;
+
+    res.status(200).json({
+      success: true,
+      message: "Demande acceptée avec succès.",
+      demande: data[0],
+    });
+  } catch (err) {
+    console.error("Erreur lors de l'acceptation de la demande:", err.message);
+    res.status(500).json({
+      success: false,
+      message: "Erreur serveur",
+      error: err.message,
+    });
+  }
+};
+
