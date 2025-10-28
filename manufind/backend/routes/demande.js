@@ -5,8 +5,7 @@ import {
   ajouterDemande,
   modifierDemande,
   supprimerDemande,
-} from "../controllers/demandeController.js"; // corriger la casse
-
+} from "../controllers/demandeController.js"; 
 const router = express.Router();
 router.get("/", getDemandes);
 router.post("/afficher", afficherDemandes);
