@@ -15,6 +15,7 @@ import Services from "./Components/Services/Services.jsx";
 import { AuthProvider } from "./Components/AuthContext/AuthContext.jsx";
 import RequestCard from "./Components/RequestCard/RequestCard.jsx";
 import RequestTab from "./Components/RequestTab/RequestTab.jsx";
+import RequestClientTab from "./Components/RequestClientTab/RequestClientTab.jsx";
 function App() {
   const router = createBrowserRouter([
     {
@@ -31,7 +32,8 @@ function App() {
         { path: "/profile-client", element: <ProfileClient /> },
         { path: "/profile-pres", element: <ProfilePrestataire /> },
         { path: "/request-service", element: <RequestCard /> },
-        { path: "/requests", element: <RequestTab /> }
+        { path: "/requests", element: <RequestTab /> },
+        { path: "/requests-client", element: <RequestClientTab /> }
 
 
       ],

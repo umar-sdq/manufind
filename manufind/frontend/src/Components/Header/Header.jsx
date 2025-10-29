@@ -29,6 +29,7 @@ const Header = () => {
         {role === "prestataire" && <NavLink to={"/map"}>Map</NavLink>}
         {role === "prestataire" && <NavLink to={"/requests"}>Requêtes acceptées</NavLink>}
         {role === "client" && <NavLink to={"/request-service"}>Requête</NavLink>}
+        {role === "client" && <NavLink to={"/requests-client"}>Requête soûmises</NavLink>}
       </div>
 
       <div className="account-links">

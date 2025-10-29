@@ -264,3 +264,51 @@ export const afficherDemandesByPrestataireID = async (req, res) => {
 };
 
 
+/**
+ * @route GET /api/demandes/client/:client_id
+ * @desc Afficher toutes les demandes d’un client spécifique
+ */
+export const afficherDemandesByClientID = async (req, res) => {
+  try {
+    const { client_id } = req.params;
+
+    if (!client_id) {
+      return res.status(400).json({
+        success: false,
+        message: "ID du client manquant.",
+      });
+    }
+
+    const { data, error } = await supabase
+      .from("demandes")
+      .select(`
+        id,
+        categorie,
+        description,
+        adresse,
+        code_postal,
+        date_heure,
+        duree_estimee,
+        statut,
+        date_creation,
+        prestataire:prestataire_id (id, nom)
+      `)
+      .eq("client_id", client_id)
+      .order("date_creation", { ascending: false });
+
+    if (error) throw error;
+
+    res.status(200).json({
+      success: true,
+      count: data.length,
+      demandes: data,
+    });
+  } catch (err) {
+    console.error("Erreur afficherDemandesByClientID:", err.message);
+    res.status(500).json({
+      success: false,
+      message: "Erreur serveur",
+      error: err.message,
+    });
+  }
+};
