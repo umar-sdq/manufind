@@ -1,13 +1,13 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useAuth } from "../AuthContext/AuthContext.jsx";
-import "../ProfilePrestataire/Profile.css";
 import API_BASE_URL from "../../config/api.js";
 
 const ProfileClient = () => {
-  const { authData, login } = useAuth();
+  const { authData, login, logout } = useAuth();
   const [nom, setNom] = useState(authData?.nom || "");
   const [email, setEmail] = useState(authData?.email || "");
   const [message, setMessage] = useState("");
+  const [stats, setStats] = useState({ total: 0, completed: 0, pending: 0 });
 
   if (!authData) return <h2>Non connecté</h2>;
 
@@ -23,7 +23,7 @@ const ProfileClient = () => {
       const data = await response.json();
       if (response.ok) {
         login({ ...authData, nom, email });
-        setMessage("Profil mis à jour");
+        setMessage("Profil mis à jour avec succès ✅");
       } else {
         setMessage(data.error);
       }
@@ -32,23 +32,91 @@ const ProfileClient = () => {
     }
   }
 
+ useEffect(() => {
+  const fetchStats = async () => {
+    try {
+      const res = await fetch(`${API_BASE_URL}/demandes/client/${authData.id}`);
+      const data = await res.json();
+
+      if (res.ok && data.success) {
+        const demandes = data.demandes || [];
+        const completed = demandes.filter(d => d.statut === "complétée").length;
+        const pending = demandes.filter(d => d.statut === "en_attente").length;
+
+        setStats({
+          total: demandes.length,
+          completed,
+          pending
+        });
+      }
+    } catch (error) {
+      console.error("Erreur récupération stats:", error);
+    }
+  };
+
+  fetchStats();
+}, [authData.id]);
+
+
   return (
-    <div className="profile-container">
-      <h1>Bienvenue, {authData.nom} (client)</h1>
-      <p>Email: {authData.email}</p>
-      <p>Rôle: {authData.role}</p>
+    <div className="profile-page">
+      <div className="profile-banner">
+        <h1>Bienvenue, {authData.nom}</h1>
+        <p>Rôle : Client</p>
+      </div>
 
-      <form onSubmit={handleUpdate}>
-        <label>Nom</label>
-        <input value={nom} onChange={(e) => setNom(e.target.value)} />
+      <section className="profile-info-section">
+        <h2>Informations personnelles</h2>
+        <form className="profile-form" onSubmit={handleUpdate}>
+          <div>
+            <label>Nom</label>
+            <input value={nom} onChange={(e) => setNom(e.target.value)} required />
+          </div>
+          <div>
+            <label>Email</label>
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              required
+            />
+          </div>
+          <button type="submit" className="profile-save-btn">
+            Mettre à jour
+          </button>
+        </form>
+        {message && <p className="message">{message}</p>}
+      </section>
 
-        <label>Email</label>
-        <input value={email} onChange={(e) => setEmail(e.target.value)} />
+      <section className="profile-stats-section">
+        <h2>Résumé d'activité</h2>
+        <div className="stats-grid">
+          <div className="stat-card">
+            <h3>{stats.total}</h3>
+            <p>Requêtes totales</p>
+          </div>
+          <div className="stat-card">
+            <h3>{stats.completed}</h3>
+            <p>Complétées</p>
+          </div>
+          <div className="stat-card">
+            <h3>{stats.pending}</h3>
+            <p>En attente</p>
+          </div>
+        </div>
 
-        <button type="submit">Mettre à jour</button>
-      </form>
+        <div className="stat-summary">
+          Vous avez un total de {stats.total} requêtes sur ManuFind. Continuez à explorer
+          de nouveaux services et à collaborer avec nos prestataires locaux.
+        </div>
+      </section>
 
-      {message && <p className="message">{message}</p>}
+      <div className="profile-actions">
+        <button className="btn-main">Voir mes requêtes</button>
+        <button className="btn-alt" onClick={logout}>
+          Déconnexion
+        </button>
+      </div>
     </div>
   );
 };
