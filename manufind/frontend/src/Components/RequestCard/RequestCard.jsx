@@ -1,7 +1,7 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState } from "react";
 import { useAuth } from "../../Components/AuthContext/AuthContext.jsx";
 import API_BASE_URL from "../../config/api.js";
+import "./RequestCard.css";
 
 const RequestCard = () => {
   const { authData } = useAuth();
@@ -9,9 +9,9 @@ const RequestCard = () => {
   const [description, setDescription] = useState("");
   const [adresse, setAdresse] = useState("");
   const [codePostal, setCodePostal] = useState("");
-  const [dateHeure, setDateHeure] = useState(""); 
-  const [dureeEstimee, setDureeEstimee] = useState(60); 
-  const [message, setMessage] = useState("");
+  const [dateHeure, setDateHeure] = useState("");
+  const [dureeEstimee, setDureeEstimee] = useState("");
+  const [showCheck, setShowCheck] = useState(false);
 
   const categories = [
     "Plomberie",
@@ -34,11 +34,8 @@ const RequestCard = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-const userId = authData?.id || authData?._id;
-    if (!userId) {
-      setMessage("Veuillez vous connecter avant de créer une demande.");
-      return;
-    }
+    const userId = authData?.id || authData?._id;
+    if (!userId) return console.log("⚠️ Connectez-vous avant de créer une demande.");
 
     const newRequest = {
       client_id: userId,
@@ -52,39 +49,39 @@ const userId = authData?.id || authData?._id;
 
     try {
       const res = await fetch(`${API_BASE_URL}/demandes/ajouter`, {
-  method: "POST",
-  headers: { "Content-Type": "application/json" },
-  body: JSON.stringify(newRequest),
-});
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(newRequest),
+      });
 
       if (res.ok) {
-        setMessage("✅ Demande créée avec succès !");
+        console.log("✅ Demande créée avec succès !");
+        setShowCheck(true);
         setCategorie("");
         setDescription("");
         setAdresse("");
         setCodePostal("");
         setDateHeure("");
-      } else {
-        const err = await res.json();
-        setMessage("❌ Erreur : " + (err.message || "Création échouée"));
+        setTimeout(() => setShowCheck(false), 2500);
       }
     } catch (error) {
-      setMessage("⚠️ Erreur de connexion au serveur.");
+      console.log("⚠️ Erreur serveur.", error);
     }
   };
 
   return (
-    <div className="login-form">
-      <form onSubmit={handleSubmit}>
-        <h2>Demande de service</h2>
+    <div className="request-container">
+      <form onSubmit={handleSubmit} className="request-form">
+        <h1>Nouvelle demande</h1>
 
-        <h4>Catégorie de service</h4>
         <select
           value={categorie}
           onChange={(e) => setCategorie(e.target.value)}
           required
         >
-          <option value="">-- Choisir une catégorie --</option>
+          <option value="" disabled hidden>
+            Catégorie
+          </option>
           {categories.map((cat, i) => (
             <option key={i} value={cat}>
               {cat}
@@ -92,59 +89,55 @@ const userId = authData?.id || authData?._id;
           ))}
         </select>
 
-        <h4>Description</h4>
         <input
           type="text"
-          placeholder="Décrivez votre demande"
+          placeholder="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
         />
 
-        <h4>Adresse</h4>
         <input
           type="text"
-          placeholder="Adresse complète"
+          placeholder="Adresse"
           value={adresse}
           onChange={(e) => setAdresse(e.target.value)}
           required
         />
 
-        <h4>Code postal</h4>
         <input
           type="text"
-          placeholder="Ex: H7N 2Y5"
+          placeholder="Code postal"
           value={codePostal}
           onChange={(e) => setCodePostal(e.target.value)}
           required
         />
 
-        <h4>Date et heure (optionnel)</h4>
         <input
           type="datetime-local"
           value={dateHeure}
           onChange={(e) => setDateHeure(e.target.value)}
         />
 
-        <h4>Durée estimée (minutes)</h4>
         <input
           type="number"
+          placeholder="Durée estimée (minutes)"
           value={dureeEstimee}
           onChange={(e) => setDureeEstimee(e.target.value)}
           min="15"
           max="480"
         />
 
-        <button type="submit">Créer la demande</button>
-        {message && <p>{message}</p>}
-
-        <h4>
-          Pas encore membre ? <NavLink to="/signup">Créer un compte.</NavLink>
-        </h4>
-        <h4>
-          Déjà membre ? <NavLink to="/login">Se connecter.</NavLink>
-        </h4>
+        <button type="submit">Soumettre</button>
       </form>
+
+      {showCheck && (
+        <div className="check-overlay">
+          <div className="checkmark-container">
+            <div className="checkmark"></div>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

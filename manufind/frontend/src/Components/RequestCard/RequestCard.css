@@ -1,0 +1,118 @@
+.request-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+  font-family: "Poppins", sans-serif;
+  background: linear-gradient(135deg, #000000, #00240f);
+  color: #d9fdd3;
+}
+
+.request-form {
+  background: linear-gradient(135deg, #001a0a, #014d2e);
+  padding: 60px 70px;
+  border-radius: 12px;
+  box-shadow: 0 0 25px rgba(0, 179, 107, 0.15);
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  width: 100%;
+  max-width: 420px;
+}
+
+.request-form h1 {
+  color: #91ecb4;
+  font-size: 1.8rem;
+  margin-bottom: 15px;
+  text-align: center;
+}
+
+.request-form input,
+.request-form select {
+  background-color: #0f1a0f;
+  border: 1px solid #00b36b;
+  border-radius: 8px;
+  padding: 12px;
+  color: #d9fdd3;
+  font-size: 1rem;
+}
+
+.request-form input::placeholder {
+  color: #9aa59a;
+}
+
+.request-form input:focus,
+.request-form select:focus {
+  outline: none;
+  box-shadow: 0 0 8px #00b36b;
+}
+
+button[type="submit"] {
+  background-color: #00b36b;
+  color: #0a0a0a;
+  border: none;
+  border-radius: 8px;
+  padding: 12px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.2s ease;
+}
+
+button[type="submit"]:hover {
+  background-color: #00e676;
+}
+
+/* ✅ Checkmark animation */
+.check-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: fadeIn 0.3s ease;
+}
+
+.checkmark-container {
+  width: 100px;
+  height: 100px;
+  border-radius: 50%;
+  background: #00b36b;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  animation: pop 0.4s ease-out;
+}
+
+.checkmark {
+  width: 25px;
+  height: 50px;
+  border-right: 6px solid #0a0a0a;
+  border-bottom: 6px solid #0a0a0a;
+  transform: rotate(45deg);
+  animation: draw 0.5s ease forwards;
+}
+
+@keyframes draw {
+  0% { opacity: 0; transform: scale(0.5) rotate(45deg); }
+  100% { opacity: 1; transform: scale(1) rotate(45deg); }
+}
+
+@keyframes fadeIn {
+  from { opacity: 0; } to { opacity: 1; }
+}
+
+@keyframes pop {
+  0% { transform: scale(0.5); opacity: 0; }
+  100% { transform: scale(1); opacity: 1; }
+}
+
+@media (max-width: 600px) {
+  .request-form {
+    padding: 40px 30px;
+  }
+
+  .request-form h1 {
+    font-size: 1.5rem;
+  }
+}
