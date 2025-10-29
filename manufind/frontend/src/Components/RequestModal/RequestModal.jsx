@@ -3,8 +3,8 @@ import { Popup } from "react-leaflet";
 import API_BASE_URL from "../../config/api.js";
 import { useAuth } from "../AuthContext/AuthContext.jsx";
 
-const RequestModal = ({ demande }) => {
-  const { authData } = useAuth(); 
+const RequestModal = ({ demande, onAccept }) => {
+  const { authData } = useAuth();
 
   if (!demande) return null;
 
@@ -24,11 +24,10 @@ const RequestModal = ({ demande }) => {
       const data = await res.json();
 
       if (res.ok) {
-        alert("Demande acceptée avec succès !");
-        console.log("Demande mise à jour :", data);
-        window.location.reload();
+        alert("✅ Demande acceptée avec succès !");
+        if (onAccept) onAccept(demande.id); // supprime sur la map
       } else {
-        alert("Erreur : " + (data.message || "Impossible d'accepter la demande"));
+        alert("❌ Erreur : " + (data.message || "Impossible d'accepter la demande"));
       }
     } catch (error) {
       console.error("Erreur lors de l'acceptation :", error);
@@ -43,6 +42,7 @@ const RequestModal = ({ demande }) => {
         <p className="adresse">{demande.adresse}</p>
         <p className="duree">Code Postal : {demande.code_postal}</p>
         <p className="duree">Durée estimée : {demande.duree_estimee} min</p>
+
         <div className="popup-actions">
           <button className="btn-accept" onClick={handleAccept}>
             Accepter

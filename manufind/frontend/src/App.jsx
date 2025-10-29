@@ -14,7 +14,7 @@ import Contact from "./Components/Contact/Contact.jsx";
 import Services from "./Components/Services/Services.jsx";
 import { AuthProvider } from "./Components/AuthContext/AuthContext.jsx";
 import RequestCard from "./Components/RequestCard/RequestCard.jsx";
-import RequestTab from "./Components/RequestTab/RequestsTab.jsx";
+import RequestTab from "./Components/RequestTab/RequestTab.jsx";
 function App() {
   const router = createBrowserRouter([
     {

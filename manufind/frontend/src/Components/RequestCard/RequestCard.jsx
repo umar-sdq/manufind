@@ -34,7 +34,7 @@ const RequestCard = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const userId = authData?.user?.id || authData?.user?._id;
+const userId = authData?.id || authData?._id;
     if (!userId) {
       setMessage("Veuillez vous connecter avant de créer une demande.");
       return;

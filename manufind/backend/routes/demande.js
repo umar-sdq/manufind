@@ -5,7 +5,8 @@ import {
   ajouterDemande,
   modifierDemande,
   supprimerDemande,
-  accepterDemande
+  accepterDemande,
+  afficherDemandesByPrestataireID
 } from "../controllers/demandeController.js"; 
 const router = express.Router();
 router.get("/", getDemandes);
@@ -14,5 +15,6 @@ router.post("/ajouter", ajouterDemande);
 router.put("/modifier/:id", modifierDemande);
 router.delete("/supprimer/:id", supprimerDemande);
 router.put("/accepter/:id", accepterDemande);
+router.get("/prestataire/:prestataire_id", afficherDemandesByPrestataireID)
 
 export default router;

@@ -5,8 +5,8 @@ import API_BASE_URL from "../../config/api.js";
 
 const ProfileClient = () => {
   const { authData, login } = useAuth();
-  const [nom, setNom] = useState(authData?.user.nom || "");
-  const [email, setEmail] = useState(authData?.user.email || "");
+  const [nom, setNom] = useState(authData?.nom || "");
+  const [email, setEmail] = useState(authData?.email || "");
   const [message, setMessage] = useState("");
 
   if (!authData) return <h2>Non connecté</h2>;
@@ -17,13 +17,13 @@ const ProfileClient = () => {
       const response = await fetch(`${API_BASE_URL}/auth/update`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ id: authData.user.id, nom, email }),
+        body: JSON.stringify({ id: authData.id, nom, email }),
       });
 
       const data = await response.json();
       if (response.ok) {
-        login({ ...authData, user: { ...authData.user, nom, email } });
-        setMessage("Profil mis à jour ");
+        login({ ...authData, nom, email });
+        setMessage("Profil mis à jour");
       } else {
         setMessage(data.error);
       }
@@ -34,9 +34,9 @@ const ProfileClient = () => {
 
   return (
     <div className="profile-container">
-      <h1>Hello, {authData.user.nom}!</h1>
-      <p>Email: {authData.user.email}</p>
-      <p>Role: {authData.user.role}</p>
+      <h1>Bienvenue, {authData.nom} (client)</h1>
+      <p>Email: {authData.email}</p>
+      <p>Rôle: {authData.role}</p>
 
       <form onSubmit={handleUpdate}>
         <label>Nom</label>

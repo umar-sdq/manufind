@@ -5,6 +5,7 @@ import "leaflet/dist/leaflet.css";
 import "./map.css";
 import API_BASE_URL from "../../config/api.js";
 import RequestModal from "../RequestModal/RequestModal.jsx";
+
 const customIcon = new L.Icon({
   iconUrl:
     "data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%232ecc71'%3E%3Cpath d='M12 0c-4.198 0-8 3.403-8 7.602 0 4.198 3.469 9.21 8 16.398 4.531-7.188 8-12.2 8-16.398 0-4.199-3.801-7.602-8-7.602zm0 11c-1.657 0-3-1.343-3-3s1.343-3 3-3 3 1.343 3 3-1.343 3-3 3z'/%3E%3C/svg%3E",
@@ -25,22 +26,13 @@ function RecenterMap({ lat, lng }) {
   const map = useMap();
   useEffect(() => {
     if (lat && lng) {
-      map.flyTo([lat, lng], 17, {
-        animate: true,
-        duration: 1.5,
-        easeLinearity: 0.25,
-      });
-
+      map.flyTo([lat, lng], 17, { animate: true, duration: 1.5, easeLinearity: 0.25 });
       const mapPane = map.getPanes().mapPane;
       mapPane.style.transition = "transform 1s ease";
       mapPane.style.transform = "rotate(1.5deg)";
-
-      setTimeout(() => {
-        mapPane.style.transform = "rotate(0deg)";
-      }, 1000);
+      setTimeout(() => (mapPane.style.transform = "rotate(0deg)"), 1000);
     }
   }, [lat, lng, map]);
-
   return null;
 }
 
@@ -59,7 +51,6 @@ const Carte = () => {
     try {
       const response = await fetch(`${API_BASE_URL}/demandes`);
       const data = await response.json();
-
       if (data.success) {
         const demandesAvecCoords = await Promise.all(
           data.demandes.map(async (demande) => {
@@ -70,7 +61,8 @@ const Carte = () => {
             return demande;
           })
         );
-        setDemandes(demandesAvecCoords.filter((d) => d.coordinates));
+        // ⚙️ Filtre : on garde seulement les demandes NON acceptées
+        setDemandes(demandesAvecCoords.filter((d) => d.coordinates && d.statut !== "acceptee"));
       }
     } catch (error) {
       console.error("Erreur lors de la récupération des demandes:", error);
@@ -86,12 +78,8 @@ const Carte = () => {
       )}`;
       const response = await fetch(url);
       const data = await response.json();
-
       if (data.length > 0) {
-        return {
-          lat: parseFloat(data[0].lat),
-          lng: parseFloat(data[0].lon),
-        };
+        return { lat: parseFloat(data[0].lat), lng: parseFloat(data[0].lon) };
       }
     } catch (error) {
       console.error("Erreur de géocodage:", error);
@@ -102,45 +90,29 @@ const Carte = () => {
   const handleSearch = async (e) => {
     e.preventDefault();
     if (!search) return;
-
-    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(
-      search
-    )}`;
-
+    const url = `https://nominatim.openstreetmap.org/search?format=json&q=${encodeURIComponent(search)}`;
     try {
       const res = await fetch(url);
       const data = await res.json();
-
       if (data.length > 0) {
         const { lat, lon } = data[0];
         const newPos = { lat: parseFloat(lat), lng: parseFloat(lon) };
         setMarkers((prev) => [...prev, newPos]);
         setSearchResult(newPos);
-      } else {
-        alert("Adresse non trouvée !");
-      }
+      } else alert("Adresse non trouvée !");
     } catch (err) {
       console.error("Erreur de recherche:", err);
     }
   };
 
-  const formatDate = (dateString) => {
-    return new Date(dateString).toLocaleString("fr-FR");
-  };
-
-  const getStatusColor = (status) => {
-    switch (status) {
-      case "en_attente":
-        return "#f39c12";
-      case "acceptee":
-        return "#3498db";
-      case "en_cours":
-        return "#9b59b6";
-      case "terminee":
-        return "#27ae60";
-      default:
-        return "#95a5a6";
-    }
+  const handleDemandeAccepted = (id) => {
+    // Optionnel : petit fade-out avant suppression
+    setDemandes((prev) =>
+      prev.map((d) => (d.id === id ? { ...d, disappearing: true } : d))
+    );
+    setTimeout(() => {
+      setDemandes((prev) => prev.filter((d) => d.id !== id));
+    }, 400);
   };
 
   return (
@@ -161,18 +133,11 @@ const Carte = () => {
         </div>
       )}
 
-      <MapContainer
-        center={[45.52, -73.76]}
-        zoom={13}
-        className="map-container"
-      >
-<TileLayer
-  attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> | &copy; <a href="https://carto.com/">CARTO</a>'
-  url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
-/>
-
-
-
+      <MapContainer center={[45.52, -73.76]} zoom={13} className="map-container">
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> | &copy; <a href="https://carto.com/">CARTO</a>'
+          url="https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}{r}.png"
+        />
 
         {markers.map((pos, idx) => (
           <Marker key={idx} position={pos} icon={customIcon}></Marker>
@@ -183,18 +148,13 @@ const Carte = () => {
             key={demande.id}
             position={[demande.coordinates.lat, demande.coordinates.lng]}
             icon={demandeIcon}
+            className={demande.disappearing ? "marker-disappear" : ""}
           >
-            <RequestModal
-              demande={demande}
-              getStatusColor={getStatusColor}
-              formatDate={formatDate}
-            />
+            <RequestModal demande={demande} onAccept={handleDemandeAccepted} />
           </Marker>
         ))}
 
-        {searchResult && (
-          <RecenterMap lat={searchResult.lat} lng={searchResult.lng} />
-        )}
+        {searchResult && <RecenterMap lat={searchResult.lat} lng={searchResult.lng} />}
       </MapContainer>
     </div>
   );

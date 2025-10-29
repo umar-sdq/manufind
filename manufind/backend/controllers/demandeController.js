@@ -213,3 +213,54 @@ export const accepterDemande = async (req, res) => {
   }
 };
 
+/**
+ * @route GET /api/demandes/prestataire/:prestataire_id
+ * @desc Afficher toutes les demandes acceptées d’un prestataire
+ */
+export const afficherDemandesByPrestataireID = async (req, res) => {
+  try {
+    const { prestataire_id } = req.params;
+
+    if (!prestataire_id) {
+      return res.status(400).json({
+        success: false,
+        message: "ID du prestataire manquant."
+      });
+    }
+
+    const { data, error } = await supabase
+      .from("demandes")
+      .select(`
+        id,
+        categorie,
+        description,
+        adresse,
+        code_postal,
+        date_heure,
+        duree_estimee,
+        statut,
+        date_creation,
+        client:client_id (id, nom)
+      `)
+      .eq("prestataire_id", prestataire_id)
+      .eq("statut", "acceptee")
+      .order("date_creation", { ascending: false });
+
+    if (error) throw error;
+
+    res.status(200).json({
+      success: true,
+      count: data.length,
+      demandes: data
+    });
+  } catch (err) {
+    console.error("Erreur afficherDemandesByPrestataireID:", err.message);
+    res.status(500).json({
+      success: false,
+      message: "Erreur serveur",
+      error: err.message
+    });
+  }
+};
+
+
