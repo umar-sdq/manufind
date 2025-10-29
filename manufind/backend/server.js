@@ -8,6 +8,7 @@ import { supabase } from "./supabase.js";
 dotenv.config();
 
 const app = express();
+const PORT = process.env.PORT || 5001;
 
 const corsOptions = {
   origin: [
@@ -23,7 +24,7 @@ const corsOptions = {
 app.use(cors(corsOptions)); 
 app.use(express.json());
 
-app.get("/", (req, res) => res.send("✅ ManuFind Backend API OK"));
+app.get("/", (req, res) => res.send(" ManuFind Backend API OK"));
 app.use("/demandes", demandeRoutes);
 app.post("/auth/signup", signup);
 app.post("/auth/login", login);
@@ -39,5 +40,7 @@ app.get("/test-supabase", async (req, res) => {
     res.status(500).json({ success: false, error: err.message });
   }
 });
-
+app.listen(PORT, () => {
+  console.log(`Serveur ManuFind démarré sur le port ${PORT}`);
+});
 export default app;
