@@ -125,12 +125,46 @@ button[type="submit"]:hover {
 @media (max-width: 900px) {
   .login-container {
     flex-direction: column;
+    justify-content: flex-start;
+    align-items: center;
+    padding: 100px 15px 40px; 
+    min-height: 100vh;
   }
 
-  .login-form-section,
-  .login-info-section {
+  .login-form-section {
     width: 100%;
-    padding: 40px 25px;
+    max-width: 420px;
+    padding: 30px 25px;
+    border-radius: 1rem;
+    background: linear-gradient(135deg, #001a0a, #014d2e);
+    box-shadow: 0 0 18px rgba(0, 179, 107, 0.2);
+  }
+
+  .login-title {
+    font-size: 1.7rem;
     text-align: center;
+  }
+
+  .login-subtitle {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+  }
+
+  .login-form input {
+    padding: 14px;
+    font-size: 1rem;
+  }
+
+  button[type="submit"] {
+    width: 100%;
+    font-size: 1rem;
+    padding: 14px;
+  }
+
+  .redirect-text {
+    text-align: center;
+    font-size: 0.9rem;
+    margin-top: 15px;
   }
 }

@@ -16,6 +16,9 @@ import RequestCard from "./Components/RequestCard/RequestCard.jsx";
 import RequestTab from "./Components/RequestTab/RequestTab.jsx";
 import RequestClientTab from "./Components/RequestClientTab/RequestClientTab.jsx";
 import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute.jsx";
+import TutorialClient from "./Components/TutorialClient/TutorialClient.jsx";
+import TutorialPrestataire from "./Components/TutorialPrestataire/TutorialPrestataire.jsx";
+import Guide from "./Components/Guide/Guide.jsx";
 
 function App() {
   const router = createBrowserRouter([
@@ -27,6 +30,9 @@ function App() {
         { path: "/", element: <About /> },
         { path: "/contact", element: <Contact /> },
         { path: "/services", element: <Services /> },
+        { path: "/guide", element: <Guide /> },
+        { path: "/tuto-client", element: <TutorialClient /> },
+        { path: "/tuto-pres", element: <TutorialPrestataire /> },
         { path: "/login", element: <LoginForm /> },
         { path: "/signup", element: <SignUpForm /> },
 
