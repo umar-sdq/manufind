@@ -130,7 +130,7 @@
 
 .statut-en_attente {
   background: rgba(255, 255, 100, 0.1);
-  color: #ffff66;
+  color: #66ff7d;
   border: 1px solid rgba(255, 255, 100, 0.3);
 }
 
@@ -159,7 +159,7 @@
   }
 }
 
-.btn-complete {
+.btn-complete, .btn-cancel {
   background: linear-gradient(90deg, #00c853, #009624);
   border: none;
   padding: 10px 20px;
@@ -175,7 +175,7 @@
   z-index: 10;
 }
 
-.btn-complete:hover {
+.btn-complete:hover, .btn-cancel:hover {
   transform: scale(1.06);
   box-shadow: 0 0 14px #00e676;
 }

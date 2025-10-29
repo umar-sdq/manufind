@@ -10,7 +10,6 @@ const RequestTab = () => {
   const [showConfirm, setShowConfirm] = useState(false);
   const [selectedId, setSelectedId] = useState(null);
 
-  // ✅ Fonction suppression
   const handleComplete = async (id) => {
     try {
       const response = await fetch(`${API_BASE_URL}/demandes/supprimer/${id}`, {
@@ -21,26 +20,23 @@ const RequestTab = () => {
       if (response.ok) {
         setDemandes((prev) => prev.filter((d) => d.id !== id));
       } else {
-        alert("❌ Erreur : " + result.message);
+        console.log(" Erreur : " + result.message);
       }
     } catch (err) {
-      alert("⚠️ Erreur serveur : " + err.message);
+      console.log(" Erreur serveur : " + err.message);
     }
   };
 
-  // ✅ Ouvre le modal
   const confirmCompletion = (id) => {
     setSelectedId(id);
     setShowConfirm(true);
   };
 
-  // ✅ Ferme le modal sans rien faire
   const cancelCompletion = () => {
     setSelectedId(null);
     setShowConfirm(false);
   };
 
-  // ✅ Confirme la suppression
   const confirmDelete = () => {
     if (selectedId) handleComplete(selectedId);
     setShowConfirm(false);
