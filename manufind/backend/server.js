@@ -15,8 +15,18 @@ const __dirname = path.dirname(__filename);
 dotenv.config({ path: path.resolve(__dirname, "../.env") });
 
 const app = express();
-app.use(cors());
 app.use(express.json());
+app.use(
+  cors({
+    origin: [
+      "https://manufind-g4pm-lzt9wiav4-umar-siddiquis-projects-3cbd1641.vercel.app", 
+      "http://localhost:5173",
+    ],
+    methods: ["GET", "POST", "PUT", "DELETE"],
+    allowedHeaders: ["Content-Type", "Authorization"],
+    credentials: true,
+  })
+);
 
 app.use("/demandes", demandeRoutes);
 app.post("/auth/signup", signup);
@@ -25,7 +35,10 @@ app.put("/auth/update", updateUser);
 
 app.get("/test-supabase", async (req, res) => {
   try {
-    const { data, error } = await supabase.from("utilisateurs").select("*").limit(1);
+    const { data, error } = await supabase
+      .from("utilisateurs")
+      .select("*")
+      .limit(1);
     if (error) throw error;
     res.json({ success: true, data });
   } catch (err) {
