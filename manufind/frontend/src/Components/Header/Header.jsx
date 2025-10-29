@@ -22,9 +22,9 @@ const Header = () => {
       </div>
 
       <div className="nav-links">
-        <NavLink to={"/about"}>A propos</NavLink>
-        <NavLink to={"/contact"}>Contact</NavLink>
         <NavLink to={"/services"}>Services</NavLink>
+        <NavLink to={"/services"}>Prestataire</NavLink>
+        <NavLink to={"/services"}>Client</NavLink>
 
         {role === "prestataire" && <NavLink to={"/map"}>Map</NavLink>}
         {role === "prestataire" && <NavLink to={"/requests"}>Requêtes acceptées</NavLink>}
