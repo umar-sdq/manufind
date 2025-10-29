@@ -1,4 +1,3 @@
-
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./Components/RootLayout/RootLayout.jsx";
@@ -16,6 +15,8 @@ import { AuthProvider } from "./Components/AuthContext/AuthContext.jsx";
 import RequestCard from "./Components/RequestCard/RequestCard.jsx";
 import RequestTab from "./Components/RequestTab/RequestTab.jsx";
 import RequestClientTab from "./Components/RequestClientTab/RequestClientTab.jsx";
+import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute.jsx";
+
 function App() {
   const router = createBrowserRouter([
     {
@@ -28,14 +29,24 @@ function App() {
         { path: "/services", element: <Services /> },
         { path: "/login", element: <LoginForm /> },
         { path: "/signup", element: <SignUpForm /> },
-        { path: "/map", element: <Carte /> },
-        { path: "/profile-client", element: <ProfileClient /> },
-        { path: "/profile-pres", element: <ProfilePrestataire /> },
-        { path: "/request-service", element: <RequestCard /> },
-        { path: "/requests", element: <RequestTab /> },
-        { path: "/requests-client", element: <RequestClientTab /> }
 
+        {
+          element: <ProtectedRoute allowedRoles={["client"]} />,
+          children: [
+            { path: "/profile-client", element: <ProfileClient /> },
+            { path: "/requests-client", element: <RequestClientTab /> },
+            { path: "/request-service", element: <RequestCard /> },
+          ],
+        },
 
+        {
+          element: <ProtectedRoute allowedRoles={["prestataire"]} />,
+          children: [
+            { path: "/profile-pres", element: <ProfilePrestataire /> },
+            { path: "/requests", element: <RequestTab /> },
+            { path: "/map", element: <Carte /> },
+          ],
+        },
       ],
     },
   ]);
