@@ -1,10 +1,8 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import "./Guide.css";
-
 import signupClient from "../../assets/images/signup-client.png";
-import main from "../../assets/images/main.png"; // une pour prestataire
-
+import main from "../../assets/images/main.png"; 
 export default function Guide() {
   const navigate = useNavigate();
 

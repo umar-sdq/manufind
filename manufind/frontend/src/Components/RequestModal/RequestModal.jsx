@@ -1,19 +1,22 @@
-import React from "react";
+import React, { useState } from "react";
 import { Popup } from "react-leaflet";
 import API_BASE_URL from "../../config/api.js";
 import { useAuth } from "../AuthContext/AuthContext.jsx";
 
 const RequestModal = ({ demande, onAccept }) => {
   const { authData } = useAuth();
+  const [loading, setLoading] = useState(false);
 
   if (!demande) return null;
 
   const handleAccept = async () => {
     try {
       if (!authData || !authData.id) {
-        alert("Erreur : aucun prestataire connecté.");
+        console.error("Erreur : aucun prestataire connecté.");
         return;
       }
+
+      setLoading(true);
 
       const res = await fetch(`${API_BASE_URL}/demandes/accepter/${demande.id}`, {
         method: "PUT",
@@ -24,14 +27,17 @@ const RequestModal = ({ demande, onAccept }) => {
       const data = await res.json();
 
       if (res.ok) {
-        alert("✅ Demande acceptée avec succès !");
-        if (onAccept) onAccept(demande.id); // supprime sur la map
+        setTimeout(() => {
+          setLoading(false);
+          if (onAccept) onAccept(demande.id);
+        }, 1500);
       } else {
-        alert("❌ Erreur : " + (data.message || "Impossible d'accepter la demande"));
+        console.error("Erreur : " + (data.message || "Impossible d'accepter la demande"));
+        setLoading(false);
       }
     } catch (error) {
       console.error("Erreur lors de l'acceptation :", error);
-      alert("Erreur de connexion au serveur.");
+      setLoading(false);
     }
   };
 
@@ -44,9 +50,14 @@ const RequestModal = ({ demande, onAccept }) => {
         <p className="duree">Durée estimée : {demande.duree_estimee} min</p>
 
         <div className="popup-actions">
-          <button className="btn-accept" onClick={handleAccept}>
+          <button
+            className={`btn-accept ${loading ? "fade-out" : ""}`}
+            onClick={!loading ? handleAccept : undefined}
+            disabled={loading}
+          >
             Accepter
           </button>
+
           <button className="btn-view">Voir détails</button>
         </div>
       </div>

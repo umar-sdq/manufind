@@ -13,6 +13,11 @@ const Header = () => {
     logout();
     navigate("/");
   };
+  const handleLogoutSide = () => {
+    logout();
+    navigate("/");
+    setMenuOpen(false);
+  };
 
   const role = authData?.role;
 
@@ -24,11 +29,12 @@ const Header = () => {
           <NavLink to={"/"}>ManuFind</NavLink>
         </div>
 
-        <div className="burger" onClick={() => setMenuOpen(!menuOpen)}>
-          <div></div>
-          <div></div>
-          <div></div>
-        </div>
+        <div className={`burger ${menuOpen ? "open" : ""}`} onClick={() => setMenuOpen(!menuOpen)}>
+  <div></div>
+  <div></div>
+  <div></div>
+</div>
+
 
         <div className="nav-links desktop">
           <NavLink to={"/services"}>Services</NavLink>
@@ -65,12 +71,12 @@ const Header = () => {
 
         {authData ? (
           <>
-            {role === "prestataire" && <NavLink to={"/map"}>Map</NavLink>}
-            {role === "prestataire" && <NavLink to={"/requests"}>Requêtes</NavLink>}
-            {role === "client" && <NavLink to={"/request-service"}>Requête</NavLink>}
-            {role === "client" && <NavLink to={"/requests-client"}>Soumises</NavLink>}
+            {role === "prestataire" && <NavLink to={"/map"}onClick={() => setMenuOpen(false)}>Map</NavLink>}
+            {role === "prestataire" && <NavLink to={"/requests"}onClick={() => setMenuOpen(false)}>Requêtes</NavLink>}
+            {role === "client" && <NavLink to={"/request-service"}onClick={() => setMenuOpen(false)}>Requête</NavLink>}
+            {role === "client" && <NavLink to={"/requests-client"}onClick={() => setMenuOpen(false)}>Soumises</NavLink>}
             <NavLink to={role === "client" ? "/profile-client" : "/profile-pres"}>Profil</NavLink>
-            <button onClick={handleLogout} className="logout-btn">
+            <button onClick={handleLogoutSide} className="logout-btn">
             Déconnexion
             </button>
           </>

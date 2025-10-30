@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useAuth } from "../AuthContext/AuthContext.jsx";
 import "./Profile.css";
 import API_BASE_URL from "../../config/api.js";
+import { useNavigate } from "react-router-dom";
 
 const ProfilePrestataire = () => {
   const { authData, login, logout } = useAuth();
@@ -9,8 +10,13 @@ const ProfilePrestataire = () => {
   const [email, setEmail] = useState(authData?.email || "");
   const [message, setMessage] = useState("");
   const [stats, setStats] = useState({ total: 0, completed: 0, pending: 0 });
+  const navigate = useNavigate();
 
   if (!authData) return <h2>Non connecté</h2>;
+
+  const handleMap = () => {
+    navigate("/map");
+  };
 
   async function handleUpdate(e) {
     e.preventDefault();
@@ -24,16 +30,16 @@ const ProfilePrestataire = () => {
       const data = await response.json();
       if (response.ok) {
         login({ ...authData, nom, email });
-        setMessage("Profil mis à jour ✅");
+        setMessage("success");
+        setTimeout(() => setMessage(""), 2500);
       } else {
-        setMessage(data.error);
+        setMessage("error");
       }
     } catch {
-      setMessage("Erreur serveur");
+      setMessage("error");
     }
   }
 
-  // 🎯 Charger les stats du prestataire depuis le backend
   useEffect(() => {
     const fetchStats = async () => {
       try {
@@ -42,8 +48,8 @@ const ProfilePrestataire = () => {
 
         if (res.ok && data.success) {
           const demandes = data.demandes || [];
-          const completed = demandes.filter(d => d.statut === "complétée").length;
-          const pending = demandes.filter(d => d.statut === "en_attente").length;
+          const completed = demandes.filter((d) => d.statut === "complétée").length;
+          const pending = demandes.filter((d) => d.statut === "en_attente").length;
 
           setStats({
             total: demandes.length,
@@ -71,11 +77,7 @@ const ProfilePrestataire = () => {
         <form className="profile-form" onSubmit={handleUpdate}>
           <div>
             <label>Nom</label>
-            <input
-              value={nom}
-              onChange={(e) => setNom(e.target.value)}
-              required
-            />
+            <input value={nom} onChange={(e) => setNom(e.target.value)} required />
           </div>
           <div>
             <label>Email</label>
@@ -86,11 +88,15 @@ const ProfilePrestataire = () => {
               required
             />
           </div>
-          <button type="submit" className="profile-save-btn">
-            Sauvegarder
+          <button
+            type="submit"
+            className={`profile-save-btn ${message === "success" ? "success" : ""}`}
+          >
+            <span className="btn-text">
+              {message === "success" ? "Sauvegardé ✅" : "Sauvegarder"}
+            </span>
           </button>
         </form>
-        {message && <p className="message">{message}</p>}
       </section>
 
       <section className="profile-stats-section">
@@ -118,7 +124,9 @@ const ProfilePrestataire = () => {
       </section>
 
       <div className="profile-actions">
-        <button className="btn-main">Accéder à la carte</button>
+        <button className="btn-main" onClick={handleMap}>
+          Accéder à la carte
+        </button>
         <button className="btn-alt" onClick={logout}>
           Déconnexion
         </button>

@@ -153,5 +153,9 @@
   .about-section button {
     width: 100%;
   }
+
+  .about-card:last-child{
+    display: none;
+  }
 }
 

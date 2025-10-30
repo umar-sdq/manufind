@@ -6,6 +6,7 @@
   background: linear-gradient(135deg, #000000, #00240f);
 }
 
+/* SECTION FORM */
 .signup-form-section {
   flex: 1;
   background: linear-gradient(135deg, #001a0a, #014d2e);
@@ -95,6 +96,7 @@ button[type="submit"]:hover {
   text-decoration: underline;
 }
 
+/* SECTION INFO (droite desktop) */
 .signup-info-section {
   flex: 1;
   background: linear-gradient(135deg, #000000, #001a00 70%);
@@ -129,22 +131,29 @@ button[type="submit"]:hover {
   font-size: 1rem;
 }
 
+/* ===== MOBILE VERSION ===== */
 @media (max-width: 900px) {
   .signup-container {
     flex-direction: column;
-    justify-content: flex-start;
     align-items: center;
-    padding: 100px 15px 40px; /* 🟢 espace sous le header */
+    justify-content: center;
+    padding: 60px 15px;
     min-height: 100vh;
+    background: linear-gradient(135deg, #001a0a, #014d2e);
   }
 
+  /* Cache complètement la section d'info sur mobile */
+  .signup-info-section {
+    display: none;
+  }
+
+  /* Centre le formulaire */
   .signup-form-section {
     width: 100%;
     max-width: 420px;
-    padding: 30px 25px;
+    padding: 35px 25px;
     border-radius: 1rem;
-    background: linear-gradient(135deg, #001a0a, #014d2e);
-    box-shadow: 0 0 18px rgba(0, 179, 107, 0.2);
+    box-shadow: 0 0 18px rgba(0, 179, 107, 0.25);
   }
 
   .signup-form-section h1 {
@@ -176,5 +185,3 @@ button[type="submit"]:hover {
     margin-top: 15px;
   }
 }
-
-

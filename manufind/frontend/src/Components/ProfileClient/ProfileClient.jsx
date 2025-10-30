@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useAuth } from "../AuthContext/AuthContext.jsx";
 import API_BASE_URL from "../../config/api.js";
+import { useNavigate } from "react-router-dom";
 
 const ProfileClient = () => {
   const { authData, login, logout } = useAuth();
@@ -8,8 +9,13 @@ const ProfileClient = () => {
   const [email, setEmail] = useState(authData?.email || "");
   const [message, setMessage] = useState("");
   const [stats, setStats] = useState({ total: 0, completed: 0, pending: 0 });
+  const navigate = useNavigate();
 
   if (!authData) return <h2>Non connecté</h2>;
+
+  const handleDemandes = () => {
+    navigate("/requests-client");
+  };
 
   async function handleUpdate(e) {
     e.preventDefault();
@@ -23,40 +29,40 @@ const ProfileClient = () => {
       const data = await response.json();
       if (response.ok) {
         login({ ...authData, nom, email });
-        setMessage("Profil mis à jour avec succès ✅");
+        setMessage("success");
+        setTimeout(() => setMessage(""), 2500);
       } else {
-        setMessage(data.error);
+        setMessage("error");
       }
     } catch {
-      setMessage("Erreur serveur");
+      setMessage("error");
     }
   }
 
- useEffect(() => {
-  const fetchStats = async () => {
-    try {
-      const res = await fetch(`${API_BASE_URL}/demandes/client/${authData.id}`);
-      const data = await res.json();
+  useEffect(() => {
+    const fetchStats = async () => {
+      try {
+        const res = await fetch(`${API_BASE_URL}/demandes/client/${authData.id}`);
+        const data = await res.json();
 
-      if (res.ok && data.success) {
-        const demandes = data.demandes || [];
-        const completed = demandes.filter(d => d.statut === "complétée").length;
-        const pending = demandes.filter(d => d.statut === "en_attente").length;
+        if (res.ok && data.success) {
+          const demandes = data.demandes || [];
+          const completed = demandes.filter(d => d.statut === "complétée").length;
+          const pending = demandes.filter(d => d.statut === "en_attente").length;
 
-        setStats({
-          total: demandes.length,
-          completed,
-          pending
-        });
+          setStats({
+            total: demandes.length,
+            completed,
+            pending,
+          });
+        }
+      } catch (error) {
+        console.error("Erreur récupération stats:", error);
       }
-    } catch (error) {
-      console.error("Erreur récupération stats:", error);
-    }
-  };
+    };
 
-  fetchStats();
-}, [authData.id]);
-
+    fetchStats();
+  }, [authData.id]);
 
   return (
     <div className="profile-page">
@@ -81,11 +87,15 @@ const ProfileClient = () => {
               required
             />
           </div>
-          <button type="submit" className="profile-save-btn">
-            Mettre à jour
+          <button
+            type="submit"
+            className={`profile-save-btn ${message === "success" ? "success" : ""}`}
+          >
+            <span className="btn-text">
+              {message === "success" ? "Mise à jour réussie" : "Mettre à jour"}
+            </span>
           </button>
         </form>
-        {message && <p className="message">{message}</p>}
       </section>
 
       <section className="profile-stats-section">
@@ -112,7 +122,9 @@ const ProfileClient = () => {
       </section>
 
       <div className="profile-actions">
-        <button className="btn-main">Voir mes requêtes</button>
+        <button className="btn-main" onClick={handleDemandes}>
+          Voir mes requêtes
+        </button>
         <button className="btn-alt" onClick={logout}>
           Déconnexion
         </button>
