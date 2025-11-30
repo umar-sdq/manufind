@@ -1,8 +1,3 @@
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen, waitFor } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
-import ProfilePrestataire from '../Components/ProfilePrestataire/ProfilePrestataire';
-
 vi.mock('../Components/AuthContext/AuthContext', () => {
   const React = require('react');
   return {
@@ -14,6 +9,11 @@ vi.mock('../Components/AuthContext/AuthContext', () => {
     }),
   };
 });
+
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { render, screen, waitFor } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import ProfilePrestataire from '../Components/ProfilePrestataire/ProfilePrestataire';
 
 const MockAuthContext = ({ children }) => {
   return (
