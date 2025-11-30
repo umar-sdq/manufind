@@ -6,11 +6,16 @@ export default defineConfig({
   plugins: [react()],
   test: {
     globals: true,
-    environment: 'jsdom',
-    setupFiles: './src/test/setup.js',
+    environment: 'happy-dom',
+    setupFiles: './src/tests/setup.js',
     coverage: {
       provider: 'v8',
       reporter: ['text', 'json', 'html'],
+    },
+  },
+  resolve: {
+    alias: {
+      '@': path.resolve(__dirname, './src'),
     },
   },
 });
