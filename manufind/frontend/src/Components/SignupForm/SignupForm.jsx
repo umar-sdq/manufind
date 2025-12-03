@@ -47,6 +47,7 @@ const SignUpForm = () => {
         <form onSubmit={handleSubmit} className="signup-form">
           <label>Nom d'utilisateur</label>
           <input
+            name="username"
             type="text"
             value={nom}
             onChange={(e) => setNom(e.target.value)}
@@ -55,6 +56,7 @@ const SignUpForm = () => {
 
           <label>Adresse courriel</label>
           <input
+            name="email"
             type="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
@@ -63,6 +65,7 @@ const SignUpForm = () => {
 
           <label>Mot de passe</label>
           <input
+            name="password"
             type="password"
             value={motDePasse}
             onChange={(e) => setMotDePasse(e.target.value)}
@@ -71,6 +74,7 @@ const SignUpForm = () => {
 
           <label>Confirmer le mot de passe</label>
           <input
+            name="confirmPassword"
             type="password"
             value={confirmMdp}
             onChange={(e) => setConfirmMdp(e.target.value)}
@@ -78,7 +82,7 @@ const SignUpForm = () => {
           />
 
           <label>Rôle</label>
-          <select value={role} onChange={(e) => setRole(e.target.value)}>
+          <select name="role" value={role} onChange={(e) => setRole(e.target.value)}>
             <option value="client">Client</option>
             <option value="prestataire">Prestataire</option>
           </select>

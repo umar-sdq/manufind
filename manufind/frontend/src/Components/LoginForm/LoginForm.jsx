@@ -21,12 +21,17 @@ const LoginForm = () => {
       });
 
       const data = await res.json();
+
       if (res.ok) {
         login(data.user);
-        navigate(data.user.role === "client" ? "/profile-client" : "/profile-pres");
-      } else setMessage(data.error || "Informations invalides.");
+
+        const role = data.user.role.toLowerCase();
+        navigate(role === "client" ? "/profile-client" : "/profile-pres");
+      } else {
+        setMessage(data.error); // message exact de l’API
+      }
     } catch {
-      setMessage("Erreur serveur. Veuillez réessayer.");
+      setMessage("Erreur serveur");
     }
   }
 
@@ -42,6 +47,7 @@ const LoginForm = () => {
           <form onSubmit={handleSubmit} className="login-form">
             <label>Adresse courriel</label>
             <input
+              name="email"
               type="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
@@ -51,6 +57,7 @@ const LoginForm = () => {
 
             <label>Mot de passe</label>
             <input
+              name="password"
               type="password"
               value={motDePasse}
               onChange={(e) => setmotDePasse(e.target.value)}
