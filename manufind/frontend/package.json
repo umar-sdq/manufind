@@ -9,9 +9,7 @@
     "lint": "eslint .",
     "preview": "vite preview",
     "test": "vitest",
-    "test:ui": "vitest --ui",
-    "test:coverage": "vitest --coverage",
-    "test:watch": "vitest --watch"
+    "postinstall": "npm rebuild @rollup/rollup-linux-x64-gnu"
   },
   "dependencies": {
     "leaflet": "^1.9.4",
@@ -28,23 +26,13 @@
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
     "@vitejs/plugin-react": "^5.0.0",
+    "@vitest/coverage-v8": "^4.0.15",
     "eslint": "^9.33.0",
     "eslint-plugin-react-hooks": "^5.2.0",
     "eslint-plugin-react-refresh": "^0.4.20",
     "globals": "^16.3.0",
     "happy-dom": "^20.0.11",
     "vite": "^7.1.2",
-    "vitest": "^4.0.14"
-  },
-
-  "scripts": {
-    "dev": "vite",
-    "build": "vite build",
-    "lint": "eslint .",
-    "preview": "vite preview",
-    "test": "vitest",
-    "postinstall": "npm rebuild @rollup/rollup-linux-x64-gnu"
+    "vitest": "^4.0.15"
   }
-
-  
 }
