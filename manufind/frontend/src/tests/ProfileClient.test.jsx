@@ -1,3 +1,8 @@
+import { describe, it, expect, beforeEach, vi } from 'vitest';
+import { render, screen, fireEvent, waitFor } from '@testing-library/react';
+import { BrowserRouter } from 'react-router-dom';
+import ProfileClient from '../Components/ProfileClient/ProfileClient';
+
 vi.mock('../Components/AuthContext/AuthContext', () => {
   const React = require('react');
   return {
@@ -9,11 +14,6 @@ vi.mock('../Components/AuthContext/AuthContext', () => {
     }),
   };
 });
-
-import { describe, it, expect, beforeEach, vi } from 'vitest';
-import { render, screen, fireEvent, waitFor } from '@testing-library/react';
-import { BrowserRouter } from 'react-router-dom';
-import ProfileClient from '../Components/ProfileClient/ProfileClient';
 
 const Wrapper = ({ children }) => (
   <BrowserRouter>
@@ -30,7 +30,6 @@ describe('ProfilClient', () => {
     });
   });
 
-  // ========== TESTS D'AFFICHAGE ==========
 
   it('devrait afficher la section profil', () => {
     render(<Wrapper><ProfileClient /></Wrapper>);
@@ -79,7 +78,6 @@ describe('ProfilClient', () => {
     expect(screen.getByText('Déconnexion')).toBeInTheDocument();
   });
 
-  // ========== TESTS DES STATISTIQUES ==========
 
   it('devrait afficher les cartes de statistiques', async () => {
     global.fetch.mockResolvedValueOnce({
@@ -112,7 +110,6 @@ describe('ProfilClient', () => {
     });
   });
 
-  // ========== TESTS D'INTERACTION ==========
 
   it('devrait mettre à jour le champ nom', () => {
     render(<Wrapper><ProfileClient /></Wrapper>);
@@ -162,7 +159,6 @@ describe('ProfilClient', () => {
     });
   });
 
-  // ========== TESTS DE STRUCTURE ==========
 
   it('devrait avoir la classe profile-page', () => {
     const { container } = render(<Wrapper><ProfileClient /></Wrapper>);
@@ -212,7 +208,6 @@ describe('ProfilClient', () => {
     expect(container.querySelector('.btn-alt')).toBeInTheDocument();
   });
 
-  // ========== TESTS DES VALEURS INITIALES ==========
 
   it('devrait initialiser le nom avec authData.nom', () => {
     render(<Wrapper><ProfileClient /></Wrapper>);
