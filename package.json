@@ -1,0 +1,7 @@
+{
+  "devDependencies": {
+    "@cypress/code-coverage": "^3.14.7",
+    "babel-plugin-istanbul": "^7.0.1",
+    "vite-plugin-istanbul": "^7.2.1"
+  }
+}
