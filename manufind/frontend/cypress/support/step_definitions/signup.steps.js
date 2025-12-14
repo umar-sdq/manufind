@@ -1,6 +1,16 @@
 /* global expect */
 import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
+/**
+ * Navigation
+ */
+Given("je suis sur {string}", (route) => {
+  cy.visit(route);
+});
+
+/**
+ * Inscription - envoi du formulaire complet
+ */
 When("je crée un compte avec:", (dataTable) => {
   const { username, email, password, confirm, role } = dataTable.hashes()[0];
 
@@ -17,14 +27,11 @@ When("je crée un compte avec:", (dataTable) => {
   cy.wait("@signupRequest");
 });
 
+/**
+ * Champs individuels
+ */
 When("je remplis le champ email avec {string}", (email) => {
   cy.get('[name="email"]').clear().type(email);
-});
-
-Then("le champ email affiche un message contenant {string}", (message) => {
-  cy.get('[name="email"]').then(($input) => {
-    expect($input[0].validationMessage).to.contain(message);
-  });
 });
 
 When("je remplis le formulaire d'inscription avec:", (dataTable) => {
@@ -37,13 +44,28 @@ When("je remplis le formulaire d'inscription avec:", (dataTable) => {
   if (role) cy.get('[name="role"]').select(role);
 });
 
+/**
+ * Validations HTML
+ */
+Then("le champ email affiche un message contenant {string}", (message) => {
+  cy.get('[name="email"]').then(($input) => {
+    expect($input[0].validationMessage).to.contain(message);
+  });
+});
+
 Then("le champ mot de passe affiche un message contenant {string}", (message) => {
   cy.get('[name="password"]').then(($input) => {
     expect($input[0].validationMessage).to.contain(message);
   });
 });
 
-When('je clique sur {string}', (label) => {
-  cy.contains('button', label).click();
+/**
+ * Actions génériques
+ */
+When("je clique sur {string}", (label) => {
+  cy.contains("button", label).click();
+});
+Then("je vois {string}", (message) => {
+  cy.contains(message).should("be.visible");
 });
 
