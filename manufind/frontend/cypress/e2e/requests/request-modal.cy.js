@@ -71,5 +71,31 @@ it("ouvre le modal sans accepter", () => {
   cy.contains("Accepter").should("be.visible");
 });
 
+it("désactive le bouton pendant le loading", () => {
+  cy.wait("@getDemandes");
+  cy.wait("@geocode");
+
+  cy.get(".leaflet-marker-icon")
+    .first()
+    .click({ force: true });
+
+  cy.contains("Accepter").click();
+
+  cy.contains("Accepter")
+    .should("be.disabled");
+});
+
+it("affiche les infos de la demande", () => {
+  cy.wait("@getDemandes");
+  cy.wait("@geocode");
+
+  cy.get(".leaflet-marker-icon")
+    .first()
+    .click({ force: true });
+
+  cy.contains("Plomberie").should("be.visible");
+  cy.contains("Code Postal").should("be.visible");
+  cy.contains("Durée estimée").should("be.visible");
+});
 
 });
