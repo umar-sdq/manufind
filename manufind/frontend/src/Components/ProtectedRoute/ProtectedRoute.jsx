@@ -5,7 +5,13 @@ import { useAuth } from "../AuthContext/AuthContext.jsx";
 const ProtectedRoute = ({ allowedRoles }) => {
   const { authData } = useAuth();
 
-  if (!authData) return <Navigate to="/login" replace />;
+  if (authData === undefined) {
+    return null; 
+  }
+
+  if (!authData) {
+    return <Navigate to="/login" replace />;
+  }
 
   if (allowedRoles && !allowedRoles.includes(authData.role)) {
     return <Navigate to="/" replace />;
