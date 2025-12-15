@@ -43,6 +43,7 @@ const LoginForm = () => {
             <label>Adresse courriel</label>
             <input
               type="email"
+              data-test="email"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="exemple@courriel.com"
@@ -52,6 +53,7 @@ const LoginForm = () => {
             <label>Mot de passe</label>
             <input
               type="password"
+              data-test="password"
               value={motDePasse}
               onChange={(e) => setmotDePasse(e.target.value)}
               placeholder="••••••••"
@@ -60,7 +62,9 @@ const LoginForm = () => {
 
             {message && <p className="error-message">{message}</p>}
 
-            <button type="submit">Se connecter</button>
+            <button type="submit" data-test="login-btn">
+              Se connecter
+            </button>
 
             <p className="redirect-text">
               Pas encore inscrit ?{" "}
