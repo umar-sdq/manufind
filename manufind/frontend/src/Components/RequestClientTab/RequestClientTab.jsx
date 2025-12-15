@@ -10,7 +10,6 @@ const RequestClientTab = () => {
   const [selectedId, setSelectedId] = useState(null);
   const [showConfirm, setShowConfirm] = useState(false);
 
-  // 🔹 Charger les demandes du client connecté
   useEffect(() => {
     const fetchClientDemandes = async () => {
       if (!authData?.id) return;

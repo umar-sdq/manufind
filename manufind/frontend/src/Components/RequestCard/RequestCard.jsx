@@ -5,26 +5,45 @@ import "./RequestCard.css";
 
 export default function RequestCard() {
   const { authData } = useAuth();
+
   const [categorie, setCategorie] = useState("");
   const [description, setDescription] = useState("");
   const [adresse, setAdresse] = useState("");
   const [codePostal, setCodePostal] = useState("");
   const [dateHeure, setDateHeure] = useState("");
   const [dureeEstimee, setDureeEstimee] = useState("");
+
   const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(""); 
 
   const categories = [
-    "Plomberie", "Électricité", "Peinture", "Rénovation", "Toiture", "Charpenterie",
-    "Nettoyage", "Paysagement", "Déménagement", "Réparation automobile",
-    "Climatisation et chauffage", "Informatique", "Serrurerie", "Maçonnerie", "Petits travaux"
+    "Plomberie",
+    "Électricité",
+    "Peinture",
+    "Rénovation",
+    "Toiture",
+    "Charpenterie",
+    "Nettoyage",
+    "Paysagement",
+    "Déménagement",
+    "Réparation automobile",
+    "Climatisation et chauffage",
+    "Informatique",
+    "Serrurerie",
+    "Maçonnerie",
+    "Petits travaux",
   ];
 
   const handleSubmit = async (e) => {
     e.preventDefault();
 
     const userId = authData?.id || authData?._id;
-    if (!userId) return alert("Veuillez vous connecter avant de créer une demande.");
+    if (!userId) {
+      setError("Veuillez vous connecter avant de créer une demande.");
+      return;
+    }
 
+    setError("");
     const newRequest = {
       client_id: userId,
       categorie,
@@ -42,8 +61,12 @@ export default function RequestCard() {
         body: JSON.stringify(newRequest),
       });
 
-      if (res.ok) {
+      const data = await res.json();
+
+      if (res.ok && data.success !== false) {
         setSuccess(true);
+        setError("");
+
         setTimeout(() => {
           setSuccess(false);
           setCategorie("");
@@ -53,9 +76,11 @@ export default function RequestCard() {
           setDateHeure("");
           setDureeEstimee("");
         }, 2500);
+      } else {
+        setError("Erreur lors de la soumission de la demande");
       }
-    } catch (error) {
-      console.error("Erreur serveur:", error);
+    } catch (err) {
+      setError("Erreur serveur");
     }
   };
 
@@ -63,32 +88,78 @@ export default function RequestCard() {
     <div className="request-page">
       <div className="request-banner">
         <h1>Créer une nouvelle demande</h1>
-        <p>Remplissez les informations ci-dessous pour soumettre votre requête à nos prestataires.</p>
+        <p>
+          Remplissez les informations ci-dessous pour soumettre votre requête à
+          nos prestataires.
+        </p>
       </div>
 
       <form onSubmit={handleSubmit} className="request-form">
         <h2>Détails de la demande</h2>
 
-        <select value={categorie} onChange={(e)=>setCategorie(e.target.value)} required>
-          <option value="" disabled hidden>Choisir une catégorie</option>
-          {categories.map((c,i)=><option key={i} value={c}>{c}</option>)}
+        {error && <p className="error-message">{error}</p>}
+
+        <select
+          value={categorie}
+          onChange={(e) => setCategorie(e.target.value)}
+          required
+        >
+          <option value="" disabled hidden>
+            Choisir une catégorie
+          </option>
+          {categories.map((c, i) => (
+            <option key={i} value={c}>
+              {c}
+            </option>
+          ))}
         </select>
 
-        <input type="text" placeholder="Description"
-          value={description} onChange={(e)=>setDescription(e.target.value)} required />
+        <input
+          type="text"
+          placeholder="Description"
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          required
+        />
 
-        <input type="text" placeholder="Adresse"
-          value={adresse} onChange={(e)=>setAdresse(e.target.value)} required />
+        <input
+          type="text"
+          placeholder="Adresse"
+          value={adresse}
+          onChange={(e) => setAdresse(e.target.value)}
+          required
+        />
 
-        <input type="text" placeholder="Code postal"
-          value={codePostal} onChange={(e)=>setCodePostal(e.target.value)} required />
+        <input
+          type="text"
+          placeholder="Code postal"
+          value={codePostal}
+          onChange={(e) => setCodePostal(e.target.value)}
+          required
+        />
 
-        <input type="datetime-local" value={dateHeure} onChange={(e)=>setDateHeure(e.target.value)} />
-        <input type="number" placeholder="Durée estimée (minutes)"
-          value={dureeEstimee} onChange={(e)=>setDureeEstimee(e.target.value)} min="15" max="480" />
+        <input
+          type="datetime-local"
+          value={dateHeure}
+          onChange={(e) => setDateHeure(e.target.value)}
+        />
 
-        <button type="submit" className={`submit-btn ${success ? "success" : ""}`}>
-          <span className="btn-text">{success ? "Demande soumise" : "Soumettre"}</span>
+        <input
+          type="number"
+          placeholder="Durée estimée (minutes)"
+          value={dureeEstimee}
+          onChange={(e) => setDureeEstimee(e.target.value)}
+          min="15"
+          max="480"
+        />
+
+        <button
+          type="submit"
+          className={`submit-btn ${success ? "success" : ""}`}
+        >
+          <span className="btn-text">
+            {success ? "Demande soumise" : "Soumettre"}
+          </span>
         </button>
       </form>
     </div>
