@@ -1,16 +1,20 @@
-import { useState } from "react";
-import { NavLink } from "react-router-dom";
+import React, { useState } from "react";
 import { useAuth } from "../../Components/AuthContext/AuthContext.jsx";
+import API_BASE_URL from "../../config/api.js";
+import "./RequestCard.css";
 
-const RequestCard = () => {
+export default function RequestCard() {
   const { authData } = useAuth();
+
   const [categorie, setCategorie] = useState("");
   const [description, setDescription] = useState("");
   const [adresse, setAdresse] = useState("");
   const [codePostal, setCodePostal] = useState("");
-  const [dateHeure, setDateHeure] = useState(""); // ajout
-  const [dureeEstimee, setDureeEstimee] = useState(60); // ajout
-  const [message, setMessage] = useState("");
+  const [dateHeure, setDateHeure] = useState("");
+  const [dureeEstimee, setDureeEstimee] = useState("");
+
+  const [success, setSuccess] = useState(false);
+  const [error, setError] = useState(""); 
 
   const categories = [
     "Plomberie",
@@ -33,12 +37,13 @@ const RequestCard = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    const userId = authData?.user?.id || authData?.user?._id;
+    const userId = authData?.id || authData?._id;
     if (!userId) {
-      setMessage("Veuillez vous connecter avant de créer une demande.");
+      setError("Veuillez vous connecter avant de créer une demande.");
       return;
     }
 
+    setError("");
     const newRequest = {
       client_id: userId,
       categorie,
@@ -50,102 +55,113 @@ const RequestCard = () => {
     };
 
     try {
-      const res = await fetch("http://localhost:5000/demandes/ajouter", {
+      const res = await fetch(`${API_BASE_URL}/demandes/ajouter`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newRequest),
       });
 
-      if (res.ok) {
-        setMessage("✅ Demande créée avec succès !");
-        setCategorie("");
-        setDescription("");
-        setAdresse("");
-        setCodePostal("");
-        setDateHeure("");
+      const data = await res.json();
+
+      if (res.ok && data.success !== false) {
+        setSuccess(true);
+        setError("");
+
+        setTimeout(() => {
+          setSuccess(false);
+          setCategorie("");
+          setDescription("");
+          setAdresse("");
+          setCodePostal("");
+          setDateHeure("");
+          setDureeEstimee("");
+        }, 2500);
       } else {
-        const err = await res.json();
-        setMessage("❌ Erreur : " + (err.message || "Création échouée"));
+        setError("Erreur lors de la soumission de la demande");
       }
-    } catch (error) {
-      setMessage("⚠️ Erreur de connexion au serveur.");
+    } catch (err) {
+      setError("Erreur serveur");
     }
   };
 
   return (
-    <div className="login-form">
-      <form onSubmit={handleSubmit}>
-        <h2>Demande de service</h2>
+    <div className="request-page">
+      <div className="request-banner">
+        <h1>Créer une nouvelle demande</h1>
+        <p>
+          Remplissez les informations ci-dessous pour soumettre votre requête à
+          nos prestataires.
+        </p>
+      </div>
 
-        <h4>Catégorie de service</h4>
+      <form onSubmit={handleSubmit} className="request-form">
+        <h2>Détails de la demande</h2>
+
+        {error && <p className="error-message">{error}</p>}
+
         <select
           value={categorie}
           onChange={(e) => setCategorie(e.target.value)}
           required
         >
-          <option value="">-- Choisir une catégorie --</option>
-          {categories.map((cat, i) => (
-            <option key={i} value={cat}>
-              {cat}
+          <option value="" disabled hidden>
+            Choisir une catégorie
+          </option>
+          {categories.map((c, i) => (
+            <option key={i} value={c}>
+              {c}
             </option>
           ))}
         </select>
 
-        <h4>Description</h4>
         <input
           type="text"
-          placeholder="Décrivez votre demande"
+          placeholder="Description"
           value={description}
           onChange={(e) => setDescription(e.target.value)}
           required
         />
 
-        <h4>Adresse</h4>
         <input
           type="text"
-          placeholder="Adresse complète"
+          placeholder="Adresse"
           value={adresse}
           onChange={(e) => setAdresse(e.target.value)}
           required
         />
 
-        <h4>Code postal</h4>
         <input
           type="text"
-          placeholder="Ex: H7N 2Y5"
+          placeholder="Code postal"
           value={codePostal}
           onChange={(e) => setCodePostal(e.target.value)}
           required
         />
 
-        <h4>Date et heure (optionnel)</h4>
         <input
           type="datetime-local"
           value={dateHeure}
           onChange={(e) => setDateHeure(e.target.value)}
         />
 
-        <h4>Durée estimée (minutes)</h4>
         <input
           type="number"
+          placeholder="Durée estimée (minutes)"
           value={dureeEstimee}
           onChange={(e) => setDureeEstimee(e.target.value)}
           min="15"
           max="480"
         />
 
-        <button type="submit">Créer la demande</button>
-        {message && <p>{message}</p>}
-
-        <h4>
-          Pas encore membre ? <NavLink to="/signup">Créer un compte.</NavLink>
-        </h4>
-        <h4>
-          Déjà membre ? <NavLink to="/login">Se connecter.</NavLink>
-        </h4>
+        <button
+          type="submit"
+          className={`submit-btn ${success ? "success" : ""}`}
+        >
+          <span className="btn-text">
+            {success ? "Demande soumise" : "Soumettre"}
+          </span>
+        </button>
       </form>
     </div>
   );
-};
-
-export default RequestCard;
+}

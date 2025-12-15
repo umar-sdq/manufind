@@ -8,14 +8,8 @@ export default defineConfig({
     istanbul({
       include: "src/**/*",
       exclude: ["node_modules", "cypress"],
-      extension: [".js", ".jsx", ".ts", ".tsx"],
-      cypress: true,     
-      requireEnv: false, 
+      extension: [".js", ".jsx"],
+      requireEnv: false,
     }),
   ],
-  base: "/",
-  build: {
-    outDir: "dist",
-    assetsDir: "assets",
-  },
 });

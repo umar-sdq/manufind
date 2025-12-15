@@ -34,7 +34,6 @@ const About = () => {
             Visualisez toutes les demandes actives sur une carte et trouvez
             rapidement celles proches de vous.
           </p>
-            <NavLink to={"/map"}>Voir la carte →</NavLink>
         </div>
       </section>
 
@@ -46,7 +45,9 @@ const About = () => {
             l’avancement en temps réel. Plus besoin d’appels ni de recherches
             compliquées — tout se fait sur ManuFind.
           </p>
-          <button>Découvrir</button>
+          <NavLink to={"/signup"} className="dec-btn">
+                  Découvrir
+                  </NavLink>
         </div>
         <img src={imgClient} alt="Travailleur" />
       </section>
@@ -59,11 +60,12 @@ const About = () => {
             Chaque travailleur sur ManuFind est vérifié et évalué par les
             clients. Vous pouvez consulter les avis avant d’accepter un service.
           </p>
-          <button>En savoir plus</button>
+          <NavLink to={"/services"} className="dec-btn">
+                  En savoir plus
+                  </NavLink>
         </div>
       </section>
 
-      {/* SETION 4 - Mission */}
       <section className="about-mission">
         <h2>Notre mission</h2>
         <p>

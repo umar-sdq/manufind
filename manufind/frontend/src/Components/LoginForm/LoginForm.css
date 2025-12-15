@@ -125,12 +125,57 @@ button[type="submit"]:hover {
 @media (max-width: 900px) {
   .login-container {
     flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 60px 15px;
+    min-height: 100vh;
+    background: linear-gradient(135deg, #001a0a, #014d2e);
   }
 
-  .login-form-section,
+  /* Cache complètement la section info pour mobile */
   .login-info-section {
+    display: none;
+  }
+
+  /* Centre le formulaire et le rend full-width */
+  .login-form-section {
     width: 100%;
-    padding: 40px 25px;
+    max-width: 420px;
+    padding: 35px 25px;
+    border-radius: 1rem;
+    box-shadow: 0 0 18px rgba(0, 179, 107, 0.25);
+  }
+
+  .login-title {
+    font-size: 1.7rem;
     text-align: center;
+  }
+
+  .login-subtitle {
+    text-align: center;
+    margin-bottom: 20px;
+    font-size: 0.95rem;
+    color: #9aa59a;
+  }
+
+  .login-form {
+    width: 100%;
+  }
+
+  .login-form input {
+    padding: 14px;
+    font-size: 1rem;
+  }
+
+  button[type="submit"] {
+    width: 100%;
+    font-size: 1rem;
+    padding: 14px;
+  }
+
+  .redirect-text {
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.9rem;
   }
 }

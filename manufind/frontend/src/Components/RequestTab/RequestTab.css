@@ -1,0 +1,276 @@
+.request-tab-container {
+  background: radial-gradient(circle at top, #0e0e0e 0%, #050505 100%);
+  color: #e0e0e0;
+  min-height: 100vh;
+  padding: 120px 70px 60px;
+  font-family: "Poppins", sans-serif;
+  transition: background 0.4s ease;
+}
+
+.request-tab-container h1 {
+  font-size: 2.6rem;
+  font-weight: 700;
+  text-align: center;
+  color: #00ff99;
+  letter-spacing: 1.5px;
+  margin-bottom: 60px;
+  position: relative;
+  animation: fadeInDown 0.8s ease forwards;
+}
+
+.request-tab-container h1::after {
+  content: "";
+  display: block;
+  width: 100px;
+  height: 3px;
+  background: linear-gradient(90deg, #00ff99, #00cc77);
+  margin: 14px auto 0;
+  border-radius: 2px;
+}
+
+@keyframes fadeInDown {
+  from {
+    opacity: 0;
+    transform: translateY(-25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+    opacity: 0;
+    transform: translateY(25px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.demandes-list {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+  gap: 30px;
+  animation: fadeUp 0.6s ease forwards;
+}
+
+.demande-card {
+  background: linear-gradient(135deg, #111 0%, #161616 100%);
+  border: 1px solid rgba(0, 255, 153, 0.1);
+  border-radius: 18px;
+  padding: 28px;
+  box-shadow: 0 10px 25px rgba(0, 255, 153, 0.05);
+  transition: all 0.35s ease;
+  position: relative;
+  overflow: hidden;
+  animation: fadeUp 0.6s ease both;
+  z-index: 2;
+}
+
+.demande-card::before {
+  content: "";
+  position: absolute;
+  top: -40%;
+  left: -40%;
+  width: 180%;
+  height: 180%;
+  background: radial-gradient(circle, rgba(0, 255, 153, 0.2), transparent 60%);
+  opacity: 0;
+  transition: opacity 0.4s ease;
+  pointer-events: none;
+}
+
+.demande-card:hover::before {
+  opacity: 1;
+}
+
+.demande-card:hover {
+  transform: translateY(-6px) scale(1.02);
+  box-shadow: 0 10px 30px rgba(0, 255, 153, 0.3);
+  border-color: #00ff99;
+}
+
+.demande-card h3 {
+  color: #00ff99;
+  font-size: 1.4rem;
+  margin-bottom: 12px;
+  text-transform: capitalize;
+}
+
+.demande-card p {
+  margin: 6px 0;
+  color: #d0d0d0;
+  font-size: 0.95rem;
+  line-height: 1.5;
+}
+
+.demande-card strong {
+  color: #00ff99;
+}
+
+.statut {
+  display: inline-block;
+  margin-top: 12px;
+  padding: 7px 13px;
+  border-radius: 10px;
+  font-weight: 600;
+  font-size: 0.9rem;
+  text-transform: capitalize;
+  transition: background 0.3s ease, color 0.3s ease;
+}
+
+.statut-acceptee {
+  background: rgba(0, 255, 153, 0.15);
+  color: #00ff99;
+  border: 1px solid rgba(0, 255, 153, 0.3);
+}
+
+.statut-en_attente {
+  background: rgba(255, 255, 100, 0.1);
+  color: #66ff7d;
+  border: 1px solid rgba(255, 255, 100, 0.3);
+}
+
+.statut-terminee {
+  background: rgba(0, 255, 255, 0.1);
+  color: #33ffff;
+  border: 1px solid rgba(0, 255, 255, 0.3);
+}
+
+.loading-text,
+.empty-text {
+  text-align: center;
+  margin-top: 120px;
+  font-size: 1.2rem;
+  color: #bdbdbd;
+  letter-spacing: 0.6px;
+  animation: fadeIn 0.7s ease forwards;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.btn-complete, .btn-cancel {
+  background: linear-gradient(90deg, #00c853, #009624);
+  border: none;
+  padding: 10px 20px;
+  color: white;
+  border-radius: 10px;
+  margin-top: 15px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-weight: 600;
+  font-size: 0.95rem;
+  letter-spacing: 0.3px;
+  position: relative;
+  z-index: 10;
+}
+
+.btn-complete:hover, .btn-cancel:hover {
+  transform: scale(1.06);
+  box-shadow: 0 0 14px #00e676;
+}
+
+.confirm-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 10, 10, 0.8);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  backdrop-filter: blur(10px);
+  z-index: 9999;
+  animation: fadeIn 0.3s ease forwards;
+}
+
+.confirm-modal {
+  background: rgba(20, 20, 20, 0.9);
+  border: 1px solid rgba(0, 255, 153, 0.3);
+  border-radius: 18px;
+  padding: 2.5rem 3rem;
+  color: #e0e0e0;
+  box-shadow: 0 0 30px rgba(0, 255, 100, 0.25);
+  text-align: center;
+  animation: fadeInUp 0.35s ease;
+  backdrop-filter: blur(15px);
+}
+
+.confirm-modal h2 {
+  color: #00e676;
+  margin-bottom: 10px;
+  font-size: 1.4rem;
+}
+
+.confirm-modal p {
+  color: #ccc;
+  font-size: 0.95rem;
+}
+
+.confirm-actions {
+  display: flex;
+  justify-content: center;
+  gap: 25px;
+  margin-top: 1.8rem;
+}
+
+.btn-yes,
+.btn-no {
+  padding: 10px 22px;
+  border-radius: 10px;
+  font-weight: 600;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-size: 0.95rem;
+}
+
+.btn-yes {
+  background: linear-gradient(90deg, #00c853, #009624);
+  color: white;
+  box-shadow: 0 0 8px rgba(0, 255, 153, 0.3);
+}
+
+.btn-yes:hover {
+  transform: scale(1.05);
+  box-shadow: 0 0 14px #00e676;
+}
+
+.btn-no {
+  background: #222;
+  color: #bbb;
+  border: 1px solid #444;
+}
+
+.btn-no:hover {
+  background: #333;
+  color: white;
+  border-color: #555;
+}
+
+@media (max-width: 768px) {
+  .request-tab-container {
+    padding: 100px 25px 30px;
+  }
+
+  .request-tab-container h1 {
+    font-size: 2rem;
+  }
+
+  .demande-card {
+    padding: 20px;
+  }
+
+  .confirm-modal {
+    width: 85%;
+    padding: 2rem;
+  }
+}

@@ -1,4 +1,3 @@
-
 import "./App.css";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import RootLayout from "./Components/RootLayout/RootLayout.jsx";
@@ -14,6 +13,13 @@ import Contact from "./Components/Contact/Contact.jsx";
 import Services from "./Components/Services/Services.jsx";
 import { AuthProvider } from "./Components/AuthContext/AuthContext.jsx";
 import RequestCard from "./Components/RequestCard/RequestCard.jsx";
+import RequestTab from "./Components/RequestTab/RequestTab.jsx";
+import RequestClientTab from "./Components/RequestClientTab/RequestClientTab.jsx";
+import ProtectedRoute from "./Components/ProtectedRoute/ProtectedRoute.jsx";
+import TutorialClient from "./Components/TutorialClient/TutorialClient.jsx";
+import TutorialPrestataire from "./Components/TutorialPrestataire/TutorialPrestataire.jsx";
+import Guide from "./Components/Guide/Guide.jsx";
+
 function App() {
   const router = createBrowserRouter([
     {
@@ -24,13 +30,29 @@ function App() {
         { path: "/", element: <About /> },
         { path: "/contact", element: <Contact /> },
         { path: "/services", element: <Services /> },
+        { path: "/guide", element: <Guide /> },
+        { path: "/tuto-client", element: <TutorialClient /> },
+        { path: "/tuto-pres", element: <TutorialPrestataire /> },
         { path: "/login", element: <LoginForm /> },
         { path: "/signup", element: <SignUpForm /> },
-        { path: "/map", element: <Carte /> },
-        { path: "/profile-client", element: <ProfileClient /> },
-        { path: "/profile-pres", element: <ProfilePrestataire /> },
-        { path: "/request-service", element: <RequestCard /> }
 
+        {
+          element: <ProtectedRoute allowedRoles={["client"]} />,
+          children: [
+            { path: "/profile-client", element: <ProfileClient /> },
+            { path: "/requests-client", element: <RequestClientTab /> },
+            { path: "/request-service", element: <RequestCard /> },
+          ],
+        },
+
+        {
+          element: <ProtectedRoute allowedRoles={["prestataire"]} />,
+          children: [
+            { path: "/profile-pres", element: <ProfilePrestataire /> },
+            { path: "/requests", element: <RequestTab /> },
+            { path: "/map", element: <Carte /> },
+          ],
+        },
       ],
     },
   ]);
