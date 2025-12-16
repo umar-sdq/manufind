@@ -18,7 +18,7 @@
   },
   "devDependencies": {
     "@badeball/cypress-cucumber-preprocessor": "^23.2.1",
-    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.7",
+    "@bahmutov/cypress-esbuild-preprocessor": "^2.2.8",
     "@eslint/js": "^9.33.0",
     "@types/react": "^19.1.10",
     "@types/react-dom": "^19.1.7",
