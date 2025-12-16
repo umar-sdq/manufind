@@ -24,6 +24,14 @@ jobs:
           cd manufind/frontend
           npm install
 
+      - name: Start Vite dev server
+        run: |
+          cd manufind/frontend
+          npm run dev &
+      
+      - name: Wait for Vite
+        run: npx wait-on http://localhost:5173
+
       - name: Run Cypress tests
         run: |
           cd manufind/frontend
