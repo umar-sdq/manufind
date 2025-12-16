@@ -1,10 +1,4 @@
-
-import { Given, When, Then } from "@badeball/cypress-cucumber-preprocessor";
-
-
-Given("je suis sur {string}", (route) => {
-  cy.visit(route);
-});
+import { When, Then } from "@badeball/cypress-cucumber-preprocessor";
 
 /**
  * Inscription - envoi du formulaire complet
@@ -21,7 +15,6 @@ When("je crée un compte avec:", (dataTable) => {
   if (role) cy.get('[name="role"]').select(role);
 
   cy.get('button[type="submit"]').click();
-
   cy.wait("@signupRequest");
 });
 
@@ -63,7 +56,3 @@ Then("le champ mot de passe affiche un message contenant {string}", (message) =>
 When("je clique sur {string}", (label) => {
   cy.contains("button", label).click();
 });
-Then("je vois {string}", (message) => {
-  cy.contains(message).should("be.visible");
-});
-
