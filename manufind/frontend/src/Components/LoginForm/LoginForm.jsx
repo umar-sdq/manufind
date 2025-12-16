@@ -28,7 +28,7 @@ const LoginForm = () => {
         const role = data.user.role.toLowerCase();
         navigate(role === "client" ? "/profile-client" : "/profile-pres");
       } else {
-        setMessage(data.error); // message exact de l’API
+        setMessage(data.error);
       }
     } catch {
       setMessage("Erreur serveur");
@@ -44,9 +44,16 @@ const LoginForm = () => {
             Accédez à votre espace ManuFind et gérez vos services simplement.
           </p>
 
-          <form onSubmit={handleSubmit} className="login-form">
-            <label>Adresse courriel</label>
+          {/* 🔐 FORMULAIRE LOGIN */}
+          <form
+            data-cy="login-form"
+            onSubmit={handleSubmit}
+            className="login-form"
+          >
+            <label htmlFor="email">Adresse courriel</label>
             <input
+              data-cy="email"
+              id="email"
               name="email"
               type="email"
               value={email}
@@ -55,8 +62,10 @@ const LoginForm = () => {
               required
             />
 
-            <label>Mot de passe</label>
+            <label htmlFor="password">Mot de passe</label>
             <input
+              data-cy="password"
+              id="password"
               name="password"
               type="password"
               value={motDePasse}
@@ -65,17 +74,26 @@ const LoginForm = () => {
               required
             />
 
-            {message && <p className="error-message">{message}</p>}
+            {message && (
+              <p data-cy="login-error" className="error-message">
+                {message}
+              </p>
+            )}
 
-            <button type="submit">Se connecter</button>
+            <button data-cy="login-submit" type="submit">
+              Se connecter
+            </button>
 
             <p className="redirect-text">
               Pas encore inscrit ?{" "}
-              <NavLink to="/signup">Créer un compte.</NavLink>
+              <NavLink data-cy="go-signup" to="/signup">
+                Créer un compte.
+              </NavLink>
             </p>
           </form>
         </div>
 
+        {/* 🔹 SECTION INFO */}
         <div className="login-info-section">
           <h2>Re-bienvenue sur ManuFind</h2>
           <p>
